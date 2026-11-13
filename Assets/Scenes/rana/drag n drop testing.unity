@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.DragAndDrop.Droppable
   snapToDropTarget: 1
+  dropParticles: {fileID: 0}
 --- !u!61 &136957833
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -570,6 +571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.DragAndDrop.Droppable
   snapToDropTarget: 1
+  dropParticles: {fileID: 0}
 --- !u!61 &639146758
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -786,6 +788,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.DragAndDrop.Droppable
   snapToDropTarget: 1
+  dropParticles: {fileID: 0}
 --- !u!61 &1173772391
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2067,7 +2070,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f488af9c2be73ad498a63fa8755b367e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.DragAndDrop.Draggable
-  worldCamera: {fileID: 1441664033}
 --- !u!61 &1421542942
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2160,6 +2162,7 @@ GameObject:
   - component: {fileID: 1441664033}
   - component: {fileID: 1441664032}
   - component: {fileID: 1441664035}
+  - component: {fileID: 1441664036}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2285,6 +2288,18 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1441664036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441664031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0f588a08752ded4baf04ea676cf218d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Gameplay.DragAndDrop.MouseInteractionHandler
 --- !u!1001 &1527497607
 PrefabInstance:
   m_ObjectHideFlags: 0

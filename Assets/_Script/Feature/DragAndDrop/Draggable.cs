@@ -1,98 +1,48 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Gimersia.Feature.DragAndDrop
 {
     [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
     public class Draggable : MonoBehaviour
     {
-        Camera _worldCamera;
-        Vector3 _dragOffset;
+        SpriteRenderer _spriteRenderer;
         Vector3 _originalPosition;
-        bool _isDragging;
-
-        public bool IsDragging => _isDragging;
+        public bool IsDragging { get; private set; }
 
         void Awake()
         {
-            _worldCamera = Camera.main;
-            if (_worldCamera == null)
-            {
-                Debug.LogError($"{nameof(Draggable)} requires a camera tagged MainCamera.", this);
-            }
+            _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        void Update()
+        public Vector3 GetTopCenterLocalPosition()
         {
-            if (_worldCamera == null || Mouse.current == null)
-            {
-                return;
-            }
-
-            var mousePosition = Mouse.current.position.ReadValue();
-            var mouseWorldPosition = GetMouseWorldPosition(mousePosition);
-
-            if (!_isDragging && Mouse.current.leftButton.wasPressedThisFrame)
-            {
-                var hits = Physics2D.OverlapPointAll(mouseWorldPosition);
-                foreach (var hit in hits)
-                {
-                    if (hit.GetComponentInParent<Draggable>() != this)
-                    {
-                        continue;
-                    }
-
-                    _originalPosition = transform.position;
-                    _dragOffset = transform.position - mouseWorldPosition;
-                    _isDragging = true;
-                    break;
-                }
-            }
-
-            if (_isDragging)
-            {
-                if (Mouse.current.leftButton.isPressed)
-                {
-                    transform.position = mouseWorldPosition + _dragOffset;
-                    return;
-                }
-
-                _isDragging = false;
-                var dropTarget = FindDropTarget(mouseWorldPosition);
-
-                if (dropTarget == null)
-                {
-                    transform.position = _originalPosition;
-                }
-                else
-                {
-                    dropTarget.AcceptDrop(this);
-                }
-            }
+            var bounds = _spriteRenderer.sprite.bounds;
+            return new Vector3(bounds.center.x, bounds.max.y, 0f);
         }
 
-        Vector3 GetMouseWorldPosition(Vector2 screenPosition)
+        public void SetTopCenterPosition(Vector3 worldPosition)
         {
-            var depth = Mathf.Abs(_worldCamera.transform.position.z - transform.position.z);
-            var worldPosition = _worldCamera.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, depth));
-            worldPosition.z = transform.position.z;
-            return worldPosition;
+            transform.position = worldPosition - transform.TransformVector(GetTopCenterLocalPosition());
         }
 
-        Droppable FindDropTarget(Vector3 position)
+        public void BeginDrag()
         {
-            var colliders = Physics2D.OverlapPointAll(position);
+            _originalPosition = transform.position;
+            IsDragging = true;
+        }
 
-            foreach (var collider in colliders)
+        public void EndDrag(Droppable dropTarget)
+        {
+            IsDragging = false;
+
+            if (dropTarget == null)
             {
-                var dropTarget = collider.GetComponent<Droppable>();
-                if (dropTarget != null)
-                {
-                    return dropTarget;
-                }
+                transform.position = _originalPosition;
             }
-
-            return null;
+            else
+            {
+                dropTarget.AcceptDrop(this);
+            }
         }
     }
 }

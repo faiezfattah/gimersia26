@@ -9,12 +9,18 @@ namespace Gimersia.Feature.DragAndDrop
         public event Action<Draggable> OnDropped;
 
         [SerializeField] bool snapToDropTarget = true;
+        [SerializeField] ParticleSystem dropParticles;
 
         public void AcceptDrop(Draggable draggable)
         {
             if (snapToDropTarget)
             {
                 draggable.transform.position = transform.position;
+            }
+
+            if (dropParticles != null)
+            {
+                dropParticles.Play();
             }
 
             OnDropped?.Invoke(draggable);
