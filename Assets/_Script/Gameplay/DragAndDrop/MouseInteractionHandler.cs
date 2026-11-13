@@ -10,17 +10,20 @@ namespace Gimersia.Gameplay.DragAndDrop
         Camera _worldCamera;
         Draggable _draggedObject;
         Vector3 _previousMousePosition;
-        Quaternion _originalRotation;
         MotionHandle _wobbleMotion;
+        float _dragAngle;
+        float _dragAngularVelocity;
+        float _horizontalMouseVelocity;
+        float _horizontalMouseVelocitySmoothing;
 
-        const float WobbleDuration = 1f;
-        const float WobbleAngle = 20f;
-        const float MinimumWobbleCycles = 1f;
-        const float MaximumWobbleCycles = 3f;
-        const float SpeedForMaximumWobble = 3f;
-        const float MaximumDragAngle = 32f;
-        const float DragAngleSensitivity = 8f;
-        const float DragAngleSmoothness = 18f;
+        const float WobbleDuration = 2f;
+        const float WobbleAngle = 30f;
+        const float WobbleCycles = 1.35f;
+        const float MaximumDragAngle = 50f;
+        const float DragAngleSensitivity = 10f;
+        const float MouseVelocitySmoothTime = 0.05f;
+        const float DragSpringStrength = 100f;
+        const float DragDamping = 6f;
 
         void Awake()
         {
@@ -46,11 +49,15 @@ namespace Gimersia.Gameplay.DragAndDrop
                 if (draggable != null)
                 {
                     _draggedObject = draggable;
-                    _originalRotation = draggable.transform.rotation;
-                    draggable.BeginDrag();
                     CancelWobble();
+                    draggable.ResetRotation();
+                    draggable.BeginDrag();
                     draggable.SetTopCenterPosition(mouseWorldPosition);
                     _previousMousePosition = mouseWorldPosition;
+                    _dragAngle = 0f;
+                    _dragAngularVelocity = 0f;
+                    _horizontalMouseVelocity = 0f;
+                    _horizontalMouseVelocitySmoothing = 0f;
                 }
             }
 
@@ -61,16 +68,24 @@ namespace Gimersia.Gameplay.DragAndDrop
 
             if (Mouse.current.leftButton.isPressed)
             {
-                var horizontalSpeed = (mouseWorldPosition.x - _previousMousePosition.x) / Time.deltaTime;
+                var horizontalSpeed = (mouseWorldPosition.x - _previousMousePosition.x)
+                    / Mathf.Max(Time.deltaTime, 0.0001f);
+                _horizontalMouseVelocity = Mathf.SmoothDamp(
+                    _horizontalMouseVelocity,
+                    horizontalSpeed,
+                    ref _horizontalMouseVelocitySmoothing,
+                    MouseVelocitySmoothTime);
                 var targetAngle = Mathf.Clamp(
-                    -horizontalSpeed * DragAngleSensitivity,
+                    -_horizontalMouseVelocity * DragAngleSensitivity,
                     -MaximumDragAngle,
                     MaximumDragAngle);
-                var targetRotation = Quaternion.Euler(0f, 0f, targetAngle);
-                _draggedObject.transform.rotation = Quaternion.Lerp(
-                    _draggedObject.transform.rotation,
-                    targetRotation,
-                    1f - Mathf.Exp(-DragAngleSmoothness * Time.deltaTime));
+                var springAcceleration = (targetAngle - _dragAngle) * DragSpringStrength;
+                var dampingAcceleration = _dragAngularVelocity * DragDamping;
+                _dragAngularVelocity += (springAcceleration - dampingAcceleration) * Time.deltaTime;
+                _dragAngle += _dragAngularVelocity * Time.deltaTime;
+                _dragAngle = Mathf.Clamp(_dragAngle, -MaximumDragAngle, MaximumDragAngle);
+                _draggedObject.transform.rotation = _draggedObject.DefaultRotation
+                    * Quaternion.Euler(0f, 0f, _dragAngle);
                 _draggedObject.SetTopCenterPosition(mouseWorldPosition);
                 _previousMousePosition = mouseWorldPosition;
                 return;
@@ -78,28 +93,28 @@ namespace Gimersia.Gameplay.DragAndDrop
 
             var dropTarget = FindDroppable(mouseWorldPosition);
             _draggedObject.EndDrag(dropTarget);
-            PlayWobble(_draggedObject, _previousMousePosition, mouseWorldPosition);
+            _draggedObject.ResetRotation();
+            PlayWobble(_draggedObject);
             _draggedObject = null;
         }
 
-        void PlayWobble(Draggable draggable, Vector3 previousPosition, Vector3 releasePosition)
+        void PlayWobble(Draggable draggable)
         {
-            var releaseSpeed = Vector3.Distance(releasePosition, previousPosition) / Time.deltaTime;
-            var wobbleCycles = Mathf.Lerp(
-                MinimumWobbleCycles,
-                MaximumWobbleCycles,
-                Mathf.InverseLerp(0f, SpeedForMaximumWobble, releaseSpeed));
-            var startRotation = draggable.transform.rotation;
-
             _wobbleMotion = LMotion.Create(0f, 1f, WobbleDuration)
                 .WithEase(Ease.OutQuad)
                 .Bind(progress =>
                 {
-                    var wobble = Mathf.Sin(progress * Mathf.PI * 2f * wobbleCycles)
+                    var wobble = Mathf.Sin(progress * Mathf.PI * 2f * WobbleCycles)
                         * WobbleAngle
                         * (1f - progress);
-                    var wobbleRotation = _originalRotation * Quaternion.Euler(0f, 0f, wobble);
-                    draggable.transform.rotation = Quaternion.Lerp(startRotation, wobbleRotation, progress);
+                    if (progress >= 0.999f)
+                    {
+                        draggable.ResetRotation();
+                        return;
+                    }
+
+                    draggable.transform.rotation = draggable.DefaultRotation
+                        * Quaternion.Euler(0f, 0f, wobble);
                 });
         }
 

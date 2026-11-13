@@ -7,11 +7,14 @@ namespace Gimersia.Feature.DragAndDrop
     {
         SpriteRenderer _spriteRenderer;
         Vector3 _originalPosition;
+        Quaternion _defaultRotation;
         public bool IsDragging { get; private set; }
+        public Quaternion DefaultRotation => _defaultRotation;
 
         void Awake()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
+            _defaultRotation = transform.rotation;
         }
 
         public Vector3 GetTopCenterLocalPosition()
@@ -29,6 +32,11 @@ namespace Gimersia.Feature.DragAndDrop
         {
             _originalPosition = transform.position;
             IsDragging = true;
+        }
+
+        public void ResetRotation()
+        {
+            transform.rotation = _defaultRotation;
         }
 
         public void EndDrag(Droppable dropTarget)
