@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Alchemy.Inspector;
+using Reflex.Attributes;
+using Reflex.Core;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -7,6 +9,7 @@ namespace Gimersia.Feature.Occupancy
 {
     public class OccupancyGrid : MonoBehaviour
     {
+        [Inject] OccupancyJudge _judge;
         public Tilemap tilemap;
 
         [ShowInInspector]
@@ -14,9 +17,14 @@ namespace Gimersia.Feature.Occupancy
 
         [ShowInInspector]
         Dictionary<Vector2Int, Occupant> _occupants = new();
-        void Start()
+        void Awake()
         {
             DiscoverOccupiable();
+            _judge.AddGrid(this);
+        }
+        void OnDestroy()
+        {
+            _judge.RemoveGrid(this);
         }
         [Button]
         void DiscoverOccupiable()
@@ -26,6 +34,7 @@ namespace Gimersia.Feature.Occupancy
             {
                 var pos = tilemap.WorldToCell(t.transform.position);
                 _occupancyGrid[(Vector2Int)pos] = t;
+                t.Inject(this);
             }
         }
         [Button]
@@ -77,9 +86,10 @@ namespace Gimersia.Feature.Occupancy
             return _occupancyGrid.TryGetValue(position, out var occupiable);
         }
 
-        public void GetViolations(List<Violation> into)
+        /// <returns>true if there is a violation</returns>
+        public bool GetViolations(List<Violation> into)
         {
-            into.Clear();
+            var hasViolation = false;
 
             foreach (var (cell, occupant) in _occupants)
             {
@@ -106,9 +116,11 @@ namespace Gimersia.Feature.Occupancy
                     if (offenders.Count > 0)
                     {
                         into.Add(new Violation(cell, occupant, rule, offenders));
+                        hasViolation = true;
                     }
                 }
             }
+            return hasViolation;
         }
 
         (EntityTraitFlags, TileTraitFlags) ResolveSubjectFlags(Subject subject, Vector2Int cell)

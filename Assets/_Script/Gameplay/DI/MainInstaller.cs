@@ -1,5 +1,4 @@
 using Gimersia.Feature.Occupancy;
-using Gimersia.Gameplay.DragAndDrop;
 using Reflex.Core;
 using UnityEngine;
 
@@ -8,11 +7,12 @@ using Resolution = Reflex.Enums.Resolution;
 
 namespace Gimersia.Gameplay.DI {
     public class MainInstaller : MonoBehaviour, IInstaller {
-        [SerializeField] OccupancyGrid _occupancyGrid;
+        [SerializeField] HUDManager _hudManager;
         public void InstallBindings(ContainerBuilder builder)
         {
             builder
-                .RegisterValue(_occupancyGrid);
+                .RegisterValue(_hudManager)
+                .RegisterType(typeof(OccupancyJudge), Lifetime.Singleton, Resolution.Eager);
         }
     }
 }

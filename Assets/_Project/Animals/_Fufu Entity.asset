@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d580247968580b47896312b86b22db4, type: 3}
+  m_Name: _Fufu Entity
+  m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Gameplay.EntityData
+  Icon: {fileID: 21300000, guid: 24ee1937a066d1446afb3630c1662697, type: 3}
+  occupancyData: {fileID: 11400000, guid: e1756b60d7fb1714296330fd4436de40, type: 2}

@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 799697689464648947}
   - component: {fileID: 1081268426291970889}
   - component: {fileID: -3977244329090732851}
-  - component: {fileID: 8288496474065504872}
+  - component: {fileID: 194581620101364446}
   m_Layer: 0
-  m_Name: Entity
+  m_Name: _Entity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f488af9c2be73ad498a63fa8755b367e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.DragAndDrop.Draggable
---- !u!114 &8288496474065504872
+--- !u!114 &194581620101364446
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2538286676646534793}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b42979dfb54cffd4fbe4d73e7e40ddd5, type: 3}
+  m_Script: {fileID: 11500000, guid: 84e9cca816743954093c9db955c8d054, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.Occupancy.Occupant
-  Data: {fileID: 11400000, guid: d2e0d202422669c46b8edcb78eef3939, type: 2}
+  m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Gameplay.Entity
+  Data: {fileID: 11400000, guid: 8545e388529ab5a40bff7f207ad27d41, type: 2}

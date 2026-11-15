@@ -1,10 +1,12 @@
-using UnityEngine;
-
 namespace Gimersia.Feature.Occupancy
 {
-    public class Occupant : MonoBehaviour
+    public sealed class Occupant
     {
-        public OccupantData Data;
-    }
+        public OccupantData Data { get; }
 
+        public Occupant(OccupantData data)
+        {
+            Data = data;
+        }
+    }
 }

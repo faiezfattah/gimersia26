@@ -7,11 +7,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Pool;
 
-namespace Gimersia.Gameplay.DragAndDrop
+namespace Gimersia.Gameplay
 {
     public class MouseInteractionHandler : MonoBehaviour
     {
-        [Inject] OccupancyGrid _grid;
+        [Inject] HUDManager _hud;
+        public LevelSystem LevelSystem;
+
         Camera _worldCamera;
         Draggable _currentDraggedObject;
         Vector3 _prevMousePos;
@@ -50,52 +52,17 @@ namespace Gimersia.Gameplay.DragAndDrop
                 var draggable = FindDraggable(mouseWorldPosition);
                 if (draggable != null)
                 {
-                    _currentDraggedObject = draggable;
-
-                    CancelWobble();
-
-                    draggable.ResetRotation();
-                    draggable.BeginDrag();
-                    draggable.SetTopCenterPosition(mouseWorldPosition);
-
                     _prevMousePos = mouseWorldPosition;
-
-                    _dragAngle = 0f;
-                    _dragAngularVelocity = 0f;
-
-                    _horizontalMouseVelocity = 0f;
-                    _horizontalMouseVelocitySmoothing = 0f;
-                    OnPickUp(draggable);
+                    OnPickUp(draggable, mouseWorldPosition);
                 }
+
                 else return;
             }
             if (_currentDraggedObject == null) return;
 
             if (Mouse.current.leftButton.isPressed)
             {
-                var horizontalSpeed = (mouseWorldPosition.x - _prevMousePos.x)
-                    / Mathf.Max(Time.deltaTime, 0.0001f);
-                _horizontalMouseVelocity = Mathf.SmoothDamp(
-                    _horizontalMouseVelocity,
-                    horizontalSpeed,
-                    ref _horizontalMouseVelocitySmoothing,
-                    MouseVelocitySmoothTime);
-
-                var targetAngle = Mathf.Clamp(
-                    -_horizontalMouseVelocity * DragAngleSensitivity,
-                    -MaximumDragAngle,
-                    MaximumDragAngle);
-                var springAcceleration = (targetAngle - _dragAngle) * DragSpringStrength;
-                var dampingAcceleration = _dragAngularVelocity * DragDamping;
-
-                _dragAngularVelocity += (springAcceleration - dampingAcceleration) * Time.deltaTime;
-                _dragAngle += _dragAngularVelocity * Time.deltaTime;
-                _dragAngle = Mathf.Clamp(_dragAngle, -MaximumDragAngle, MaximumDragAngle);
-                _currentDraggedObject.transform.rotation = _currentDraggedObject.DefaultRotation * Quaternion.Euler(0f, 0f, _dragAngle);
-
-                _currentDraggedObject.SetTopCenterPosition(mouseWorldPosition);
-                _prevMousePos = mouseWorldPosition;
-
+                OnDrag(_currentDraggedObject, mouseWorldPosition);
                 return;
             }
 
@@ -104,15 +71,54 @@ namespace Gimersia.Gameplay.DragAndDrop
         }
         void OnHover(Draggable draggable)
         {
-            
+
         }
-        void OnPickUp(Draggable draggable)
+        void OnPickUp(Draggable draggable, Vector3 mouseWorldPosition)
         {
-            
+            _currentDraggedObject = draggable;
+
+            CancelWobble();
+
+            draggable.ResetRotation();
+            draggable.BeginDrag();
+            draggable.SetTopCenterPosition(mouseWorldPosition);
+
+            _dragAngle = 0f;
+            _dragAngularVelocity = 0f;
+
+            _horizontalMouseVelocity = 0f;
+            _horizontalMouseVelocitySmoothing = 0f;
+
+            if (!draggable.TryGetComponent<Entity>(out var entity) || entity.Occupant == null)
+                throw new System.Exception($"Entity with valid data doesnt exist on the draggable object {draggable.name}.");
+
+            _hud.UpdateCard(entity.Data);
         }
-        void OnDrag(Draggable draggable)
+        void OnDrag(Draggable draggable, Vector3 mouseWorldPosition)
         {
-            
+            var horizontalSpeed = (mouseWorldPosition.x - _prevMousePos.x)
+                / Mathf.Max(Time.deltaTime, 0.0001f);
+            _horizontalMouseVelocity = Mathf.SmoothDamp(
+                _horizontalMouseVelocity,
+                horizontalSpeed,
+                ref _horizontalMouseVelocitySmoothing,
+                MouseVelocitySmoothTime);
+
+            var targetAngle = Mathf.Clamp(
+                -_horizontalMouseVelocity * DragAngleSensitivity,
+                -MaximumDragAngle,
+                MaximumDragAngle);
+            var springAcceleration = (targetAngle - _dragAngle) * DragSpringStrength;
+            var dampingAcceleration = _dragAngularVelocity * DragDamping;
+
+            _dragAngularVelocity += (springAcceleration - dampingAcceleration) * Time.deltaTime;
+            _dragAngle += _dragAngularVelocity * Time.deltaTime;
+            _dragAngle = Mathf.Clamp(_dragAngle, -MaximumDragAngle, MaximumDragAngle);
+            _currentDraggedObject.transform.rotation = _currentDraggedObject.DefaultRotation * Quaternion.Euler(0f, 0f, _dragAngle);
+
+            _currentDraggedObject.SetTopCenterPosition(mouseWorldPosition);
+            _prevMousePos = mouseWorldPosition;
+
         }
 
         void OnDrop(Droppable dropTarget)
@@ -120,10 +126,13 @@ namespace Gimersia.Gameplay.DragAndDrop
             var draggedObject = _currentDraggedObject;
             var accepted = false;
 
-            if (dropTarget != null && draggedObject.TryGetComponent(out Occupant occupant))
+            if (dropTarget != null && 
+                draggedObject.TryGetComponent(out Entity entity) && 
+                entity.Occupant != null &&
+                dropTarget.TryGetComponent<Occupiable>(out var occupiable))
             {
-                _grid.TryVacate(occupant);     // remove previous occupancy if any
-                accepted = _grid.TryOccupy(occupant, dropTarget.transform.position);
+                occupiable.Grid.TryVacate(entity.Occupant);     // remove previous occupancy if any
+                accepted = occupiable.Grid.TryOccupy(entity.Occupant, dropTarget.transform.position);
             }
 
             draggedObject.EndDrag(accepted ? dropTarget : null);
@@ -131,17 +140,7 @@ namespace Gimersia.Gameplay.DragAndDrop
             PlayWobble(draggedObject);
             _currentDraggedObject = null;
 
-            if (accepted)       // TODO: move to idk level manager or smth
-            {
-                using (ListPool<Violation>.Get(out List<Violation> violations))
-                {
-                    _grid.GetViolations(violations);
-
-                    foreach (var violation in violations)
-                        Debug.Log($"Violation: {violation}");
-
-                }
-            }
+            LevelSystem.EvaluateLevel();
         }
 
         void PlayWobble(Draggable draggable)

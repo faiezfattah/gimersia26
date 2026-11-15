@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8955c556ae4a8b949a82046723e8fee3, type: 3}
   m_Name: _Fafa
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.Occupancy.OccupantData
+  Icon: {fileID: -1909741272, guid: 19bfeb7c07381634abd05b4d283570ac, type: 3}
   Width: 1
   Height: 1
   Traits: 8
