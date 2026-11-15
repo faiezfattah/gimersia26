@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Gimersia.Feature.DragAndDrop;
 using Gimersia.Feature.Occupancy;
 using LitMotion;
+using LitMotion.Extensions;
 using Reflex.Attributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -133,11 +134,11 @@ namespace Gimersia.Gameplay
             {
                 occupiable.Grid.TryVacate(entity.Occupant);     // remove previous occupancy if any
                 accepted = occupiable.Grid.TryOccupy(entity.Occupant, dropTarget.transform.position);
+                _currentDraggedObject.transform.parent = dropTarget.transform;
             }
 
             draggedObject.EndDrag(accepted ? dropTarget : null);
             draggedObject.ResetRotation();
-            PlayWobble(draggedObject);
             _currentDraggedObject = null;
 
             LevelSystem.EvaluateLevel();
