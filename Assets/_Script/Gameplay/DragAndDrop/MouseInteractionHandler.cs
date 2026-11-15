@@ -1,15 +1,20 @@
+using System.Collections.Generic;
+using Gimersia.Feature.DragAndDrop;
+using Gimersia.Feature.Occupancy;
+using LitMotion;
+using Reflex.Attributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using LitMotion;
-using Gimersia.Feature.DragAndDrop;
+using UnityEngine.Pool;
 
 namespace Gimersia.Gameplay.DragAndDrop
 {
     public class MouseInteractionHandler : MonoBehaviour
     {
+        [Inject] OccupancyGrid _grid;
         Camera _worldCamera;
-        Draggable _draggedObject;
-        Vector3 _previousMousePosition;
+        Draggable _currentDraggedObject;
+        Vector3 _prevMousePos;
         MotionHandle _wobbleMotion;
         float _dragAngle;
         float _dragAngularVelocity;
@@ -36,66 +41,107 @@ namespace Gimersia.Gameplay.DragAndDrop
 
         void Update()
         {
-            if (_worldCamera == null || Mouse.current == null)
-            {
-                return;
-            }
+            if (_worldCamera == null || Mouse.current == null) return;
 
             var mouseWorldPosition = GetMouseWorldPosition();
 
-            if (_draggedObject == null && Mouse.current.leftButton.wasPressedThisFrame)
+            if (_currentDraggedObject == null && Mouse.current.leftButton.wasPressedThisFrame)
             {
                 var draggable = FindDraggable(mouseWorldPosition);
                 if (draggable != null)
                 {
-                    _draggedObject = draggable;
+                    _currentDraggedObject = draggable;
+
                     CancelWobble();
+
                     draggable.ResetRotation();
                     draggable.BeginDrag();
                     draggable.SetTopCenterPosition(mouseWorldPosition);
-                    _previousMousePosition = mouseWorldPosition;
+
+                    _prevMousePos = mouseWorldPosition;
+
                     _dragAngle = 0f;
                     _dragAngularVelocity = 0f;
+
                     _horizontalMouseVelocity = 0f;
                     _horizontalMouseVelocitySmoothing = 0f;
+                    OnPickUp(draggable);
                 }
+                else return;
             }
-
-            if (_draggedObject == null)
-            {
-                return;
-            }
+            if (_currentDraggedObject == null) return;
 
             if (Mouse.current.leftButton.isPressed)
             {
-                var horizontalSpeed = (mouseWorldPosition.x - _previousMousePosition.x)
+                var horizontalSpeed = (mouseWorldPosition.x - _prevMousePos.x)
                     / Mathf.Max(Time.deltaTime, 0.0001f);
                 _horizontalMouseVelocity = Mathf.SmoothDamp(
                     _horizontalMouseVelocity,
                     horizontalSpeed,
                     ref _horizontalMouseVelocitySmoothing,
                     MouseVelocitySmoothTime);
+
                 var targetAngle = Mathf.Clamp(
                     -_horizontalMouseVelocity * DragAngleSensitivity,
                     -MaximumDragAngle,
                     MaximumDragAngle);
                 var springAcceleration = (targetAngle - _dragAngle) * DragSpringStrength;
                 var dampingAcceleration = _dragAngularVelocity * DragDamping;
+
                 _dragAngularVelocity += (springAcceleration - dampingAcceleration) * Time.deltaTime;
                 _dragAngle += _dragAngularVelocity * Time.deltaTime;
                 _dragAngle = Mathf.Clamp(_dragAngle, -MaximumDragAngle, MaximumDragAngle);
-                _draggedObject.transform.rotation = _draggedObject.DefaultRotation
-                    * Quaternion.Euler(0f, 0f, _dragAngle);
-                _draggedObject.SetTopCenterPosition(mouseWorldPosition);
-                _previousMousePosition = mouseWorldPosition;
+                _currentDraggedObject.transform.rotation = _currentDraggedObject.DefaultRotation * Quaternion.Euler(0f, 0f, _dragAngle);
+
+                _currentDraggedObject.SetTopCenterPosition(mouseWorldPosition);
+                _prevMousePos = mouseWorldPosition;
+
                 return;
             }
 
             var dropTarget = FindDroppable(mouseWorldPosition);
-            _draggedObject.EndDrag(dropTarget);
-            _draggedObject.ResetRotation();
-            PlayWobble(_draggedObject);
-            _draggedObject = null;
+            OnDrop(dropTarget);
+        }
+        void OnHover(Draggable draggable)
+        {
+            
+        }
+        void OnPickUp(Draggable draggable)
+        {
+            
+        }
+        void OnDrag(Draggable draggable)
+        {
+            
+        }
+
+        void OnDrop(Droppable dropTarget)
+        {
+            var draggedObject = _currentDraggedObject;
+            var accepted = false;
+
+            if (dropTarget != null && draggedObject.TryGetComponent(out Occupant occupant))
+            {
+                _grid.TryVacate(occupant);     // remove previous occupancy if any
+                accepted = _grid.TryOccupy(occupant, dropTarget.transform.position);
+            }
+
+            draggedObject.EndDrag(accepted ? dropTarget : null);
+            draggedObject.ResetRotation();
+            PlayWobble(draggedObject);
+            _currentDraggedObject = null;
+
+            if (accepted)       // TODO: move to idk level manager or smth
+            {
+                using (ListPool<Violation>.Get(out List<Violation> violations))
+                {
+                    _grid.GetViolations(violations);
+
+                    foreach (var violation in violations)
+                        Debug.Log($"Violation: {violation}");
+
+                }
+            }
         }
 
         void PlayWobble(Draggable draggable)

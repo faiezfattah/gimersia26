@@ -1,14 +1,10 @@
+using System;
 using UnityEngine;
 
 namespace Gimersia.Feature.Occupancy
 {
     public class Occupiable : MonoBehaviour
     {
-        public OccupiableType Type;   
-    }
-    public enum OccupiableType
-    {
-        Land,
-        Water,
+        public TileTraitFlags Traits;   // we show this as icons
     }
 }
