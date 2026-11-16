@@ -12,7 +12,6 @@ namespace Gimersia.Feature.Occupancy
         
         [Space(10)]
         public EntityTraitFlags Traits;
-        public List<Rule> Rules;
     }
 
 }

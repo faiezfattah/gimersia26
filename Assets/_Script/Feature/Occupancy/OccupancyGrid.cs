@@ -93,7 +93,7 @@ namespace Gimersia.Feature.Occupancy
 
             foreach (var (cell, occupant) in _occupants)
             {
-                foreach (var rule in occupant.Data.Rules)
+                foreach (var rule in occupant.Rules)
                 {
                     var offenders = new List<Vector2Int>();
 

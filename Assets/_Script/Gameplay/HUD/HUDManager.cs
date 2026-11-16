@@ -40,7 +40,7 @@ namespace Gimersia.Gameplay
         {
             ProfileIcon.sprite = data.Icon;
             Traits.text = data.occupant.Data.Traits.ToString();
-            Rules.text = string.Join("\n", data.occupant.Data.Rules);
+            Rules.text = string.Join("\n", data.occupant.Rules);
         }
 
         void UpdateLevel() // need level info

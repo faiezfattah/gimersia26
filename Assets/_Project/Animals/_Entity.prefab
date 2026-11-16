@@ -166,6 +166,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.Occupancy.Occupant
   Data: {fileID: 11400000, guid: d2e0d202422669c46b8edcb78eef3939, type: 2}
+  Rules:
+  - {fileID: 11400000, guid: 1d52ffe23008c0b4bbecbd535d4f9330, type: 2}
 --- !u!114 &-7231927235395984746
 MonoBehaviour:
   m_ObjectHideFlags: 0
