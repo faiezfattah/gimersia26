@@ -19,7 +19,7 @@ public class OccupancyManager
         else Debug.LogError($"Grid {grid.name} is not registered in JudgingSystem.");
     }
 
-    public List<Violation> Judge()
+    public List<Violation> GetViolations()
     {
         var v = new List<Violation>();
 
@@ -29,6 +29,17 @@ public class OccupancyManager
         }
         
         return v;
+    }
+    public bool HasViolations()
+    {
+        using (ListPool<Violation>.Get(out var violations))
+        {
+            foreach (var grid in _grids)
+            {
+                grid.GetViolations(violations);
+            }
+            return violations.Count == 0;
+        }
     }
     public void ShowDroppableTiles()
     {

@@ -150,6 +150,11 @@ namespace Gimersia.Gameplay
 
             _occupancyManager.HideDroppableTiles();
             LevelSystem.EvaluateLevel();
+
+            foreach (var v in _occupancyManager.GetViolations())
+            {
+                _dialogueSystem.ShowDialogue(v.Occupant.transform, v.Rule.ErrorText);
+            }
         }
 
         void PlayWobble(Draggable draggable)

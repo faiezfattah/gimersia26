@@ -50,7 +50,8 @@ public class DialogueSystem : MonoBehaviour
             Debug.LogWarning($"No dialogue bubble found for target {target.name}");
             return;
         }
-
+        
+        _dialogueBubbles.Remove(target);
         _pool.Release(bubble);
     }
 }

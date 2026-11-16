@@ -10,18 +10,13 @@ public class LevelSystem : MonoBehaviour
         Debug.Assert(_judge != null, "OccupancyJudge is not injected.");
         Debug.Assert(_dialogueSystem != null, "DialogueSystem is not injected.");
 
-        var violations = _judge.Judge();
-        if (violations != null & violations.Count > 0)
+        if (_judge.HasViolations())
         {
-            foreach (var violation in violations)
-            {
-                Debug.Log($"Violation: {violation}");
-                _dialogueSystem.ShowDialogue(violation.Occupant.transform, violation.Rule.ErrorText);
-            }
+            Debug.Log("Level failed bro");
         }
-        else
+        else 
         {
-            Debug.Log("Level passed!");
+            Debug.Log("Level passed bro");
         }
     }
 

@@ -28,7 +28,7 @@ namespace Gimersia.Gameplay
         }
         void OnSubmit()
         {
-            var violation = _judgingSystem.Judge();
+            var violation = _judgingSystem.GetViolations();
             Log.text = "Violations:\n";
             foreach (var v in violation)
             {
