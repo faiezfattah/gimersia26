@@ -8,10 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7231927235395984746, guid: e1e7491aca8071e46b5e6f2aa8946e6a, type: 3}
+      propertyPath: Icon
+      value: 
+      objectReference: {fileID: 21300000, guid: 24ee1937a066d1446afb3630c1662697, type: 3}
     - target: {fileID: 194581620101364446, guid: e1e7491aca8071e46b5e6f2aa8946e6a, type: 3}
       propertyPath: Data
       value: 
-      objectReference: {fileID: 11400000, guid: 5d87d050dd9e90e4ca89b82c7841168b, type: 2}
+      objectReference: {fileID: 11400000, guid: e1756b60d7fb1714296330fd4436de40, type: 2}
     - target: {fileID: 799697689464648947, guid: e1e7491aca8071e46b5e6f2aa8946e6a, type: 3}
       propertyPath: m_Sprite
       value: 

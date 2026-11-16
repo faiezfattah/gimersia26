@@ -6,7 +6,7 @@ namespace Gimersia.Feature.Occupancy
     [CreateAssetMenu(menuName = "Occupancy/Rule")]
     public class Rule : ScriptableObject
     {
-        public string RuleText;
+        public string ErrorText;
         public Subject Subject;
         public Scope Scope;
         [Min(1)] public int Extent = 1;

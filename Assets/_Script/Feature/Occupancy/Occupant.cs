@@ -1,12 +1,12 @@
+using UnityEngine;
+using Alchemy.Inspector;
+using Gimersia.Gameplay;
+
 namespace Gimersia.Feature.Occupancy
 {
-    public sealed class Occupant
+    public sealed class Occupant : MonoBehaviour
     {
-        public OccupantData Data { get; }
+        [Required] public OccupantData Data;
 
-        public Occupant(OccupantData data)
-        {
-            Data = data;
-        }
     }
 }

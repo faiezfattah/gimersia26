@@ -9,6 +9,7 @@ namespace Gimersia.Feature.Occupancy
         public readonly Occupant Occupant;
         public readonly Rule Rule;
         public readonly List<Vector2Int> Offenders; // cells that matched (useful for Avoid)
+
         public Violation(Vector2Int c, Occupant o, Rule r, List<Vector2Int> off)
         {
             Cell = c;

@@ -1,12 +1,9 @@
-using System.Collections.Generic;
 using Gimersia.Feature.DragAndDrop;
 using Gimersia.Feature.Occupancy;
 using LitMotion;
-using LitMotion.Extensions;
 using Reflex.Attributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Pool;
 
 namespace Gimersia.Gameplay
 {
@@ -48,17 +45,25 @@ namespace Gimersia.Gameplay
 
             var mouseWorldPosition = GetMouseWorldPosition();
 
-            if (_currentDraggedObject == null && Mouse.current.leftButton.wasPressedThisFrame)
+            if (_currentDraggedObject == null)
             {
                 var draggable = FindDraggable(mouseWorldPosition);
-                if (draggable != null)
+                if (draggable == null) return;
+
+                _prevMousePos = mouseWorldPosition;
+                
+                if (Mouse.current.leftButton.wasPressedThisFrame)
                 {
-                    _prevMousePos = mouseWorldPosition;
+                    _currentDraggedObject = draggable;
                     OnPickUp(draggable, mouseWorldPosition);
                 }
-
-                else return;
+                else
+                {
+                    OnHover(draggable);
+                }
             }
+
+            // if still null dont do anything
             if (_currentDraggedObject == null) return;
 
             if (Mouse.current.leftButton.isPressed)
@@ -72,11 +77,10 @@ namespace Gimersia.Gameplay
         }
         void OnHover(Draggable draggable)
         {
-
+            Debug.Log($"Hovering over {draggable.name}");
         }
         void OnPickUp(Draggable draggable, Vector3 mouseWorldPosition)
         {
-            _currentDraggedObject = draggable;
 
             CancelWobble();
 
@@ -90,10 +94,10 @@ namespace Gimersia.Gameplay
             _horizontalMouseVelocity = 0f;
             _horizontalMouseVelocitySmoothing = 0f;
 
-            if (!draggable.TryGetComponent<Entity>(out var entity) || entity.Occupant == null)
-                throw new System.Exception($"Entity with valid data doesnt exist on the draggable object {draggable.name}.");
+            if (!draggable.TryGetComponent<Entity>(out var entity))
+                throw new System.Exception($"Occupant with valid data doesnt exist on the draggable object {draggable.name}.");
 
-            _hud.UpdateCard(entity.Data);
+            _hud.UpdateCard(entity);
         }
         void OnDrag(Draggable draggable, Vector3 mouseWorldPosition)
         {
@@ -127,13 +131,12 @@ namespace Gimersia.Gameplay
             var draggedObject = _currentDraggedObject;
             var accepted = false;
 
-            if (dropTarget != null && 
-                draggedObject.TryGetComponent(out Entity entity) && 
-                entity.Occupant != null &&
+            if (dropTarget != null &&
+                draggedObject.TryGetComponent(out Occupant occupant) &&
                 dropTarget.TryGetComponent<Occupiable>(out var occupiable))
             {
-                occupiable.Grid.TryVacate(entity.Occupant);     // remove previous occupancy if any
-                accepted = occupiable.Grid.TryOccupy(entity.Occupant, dropTarget.transform.position);
+                occupiable.Grid.TryVacate(occupant);     // remove previous occupancy if any
+                accepted = occupiable.Grid.TryOccupy(occupant, dropTarget.transform.position);
                 _currentDraggedObject.transform.parent = dropTarget.transform;
             }
 

@@ -36,11 +36,11 @@ namespace Gimersia.Gameplay
             }
         }
 
-        public void UpdateCard(EntityData data)
+        public void UpdateCard(Entity data)
         {
             ProfileIcon.sprite = data.Icon;
-            Traits.text = data.occupancyData.Traits.ToString();
-            Rules.text = string.Join("\n", data.occupancyData.Rules);
+            Traits.text = data.occupant.Data.Traits.ToString();
+            Rules.text = string.Join("\n", data.occupant.Data.Rules);
         }
 
         void UpdateLevel() // need level info

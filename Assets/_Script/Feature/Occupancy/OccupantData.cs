@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Gimersia.Feature.Occupancy
 {
+    [CreateAssetMenu(menuName = "Occupancy/Occupant Data")]
     public class OccupantData : ScriptableObject
     {
         public int Width = 1;

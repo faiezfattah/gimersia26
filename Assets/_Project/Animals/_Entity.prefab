@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1081268426291970889}
   - component: {fileID: -3977244329090732851}
   - component: {fileID: 194581620101364446}
+  - component: {fileID: -7231927235395984746}
   m_Layer: 0
   m_Name: _Entity
   m_TagString: Untagged
@@ -161,7 +162,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 2538286676646534793}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84e9cca816743954093c9db955c8d054, type: 3}
+  m_Script: {fileID: 11500000, guid: b42979dfb54cffd4fbe4d73e7e40ddd5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Gameplay.Entity
-  Data: {fileID: 11400000, guid: 8545e388529ab5a40bff7f207ad27d41, type: 2}
+  m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.Occupancy.Occupant
+  Data: {fileID: 11400000, guid: d2e0d202422669c46b8edcb78eef3939, type: 2}
+--- !u!114 &-7231927235395984746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2538286676646534793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d580247968580b47896312b86b22db4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Gameplay.EntityData
+  Icon: {fileID: 658167972, guid: 19bfeb7c07381634abd05b4d283570ac, type: 3}
+  occupant: {fileID: 194581620101364446}
