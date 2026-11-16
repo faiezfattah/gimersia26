@@ -4,7 +4,7 @@ using Gimersia.Feature.Occupancy;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class OccupancyJudge
+public class OccupancyManager
 {
     [SerializeField, ReadOnly] List<OccupancyGrid> _grids = new();
 
@@ -29,5 +29,19 @@ public class OccupancyJudge
         }
         
         return v;
+    }
+    public void ShowDroppableTiles()
+    {
+        foreach (var grid in _grids)
+        {
+            grid.ShowDroppableTiles();
+        }
+    }
+    public void HideDroppableTiles()
+    {
+        foreach (var grid in _grids)
+        {
+            grid.HideDroppableTiles();
+        }
     }
 }

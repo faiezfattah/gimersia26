@@ -8,7 +8,7 @@ namespace Gimersia.Gameplay
 {
     public class HUDManager : MonoBehaviour
     {
-        [Inject] OccupancyJudge _judgingSystem;
+        [Inject] OccupancyManager _judgingSystem;
         public Image ProfileIcon;
         public TextMeshProUGUI Traits;
         public TextMeshProUGUI Rules;

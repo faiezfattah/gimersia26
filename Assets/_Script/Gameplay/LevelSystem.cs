@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class LevelSystem : MonoBehaviour
 {
-    [Inject] OccupancyJudge _judge;
+    [Inject] OccupancyManager _judge;
     [Inject] DialogueSystem _dialogueSystem;
     public void EvaluateLevel()
     {
         Debug.Assert(_judge != null, "OccupancyJudge is not injected.");
         Debug.Assert(_dialogueSystem != null, "DialogueSystem is not injected.");
-        
+
         var violations = _judge.Judge();
         if (violations != null & violations.Count > 0)
         {

@@ -10,6 +10,8 @@ namespace Gimersia.Gameplay
     public class MouseInteractionHandler : MonoBehaviour
     {
         [Inject] HUDManager _hud;
+        [Inject] DialogueSystem _dialogueSystem;
+        [Inject] OccupancyManager _occupancyManager;
         public LevelSystem LevelSystem;
 
         Camera _worldCamera;
@@ -97,7 +99,9 @@ namespace Gimersia.Gameplay
             if (!draggable.TryGetComponent<Entity>(out var entity))
                 throw new System.Exception($"Occupant with valid data doesnt exist on the draggable object {draggable.name}.");
 
+            _dialogueSystem.HideDialogue(entity.occupant.transform);
             _hud.UpdateCard(entity);
+            _occupancyManager.ShowDroppableTiles();
         }
         void OnDrag(Draggable draggable, Vector3 mouseWorldPosition)
         {
@@ -144,6 +148,7 @@ namespace Gimersia.Gameplay
             draggedObject.ResetRotation();
             _currentDraggedObject = null;
 
+            _occupancyManager.HideDroppableTiles();
             LevelSystem.EvaluateLevel();
         }
 

@@ -9,7 +9,7 @@ namespace Gimersia.Feature.Occupancy
 {
     public class OccupancyGrid : MonoBehaviour
     {
-        [Inject] OccupancyJudge _judge;
+        [Inject] OccupancyManager _manager;
         public Tilemap tilemap;
 
         [ShowInInspector]
@@ -20,11 +20,11 @@ namespace Gimersia.Feature.Occupancy
         void Awake()
         {
             DiscoverOccupiable();
-            _judge.AddGrid(this);
+            _manager.AddGrid(this);
         }
         void OnDestroy()
         {
-            _judge.RemoveGrid(this);
+            _manager.RemoveGrid(this);
         }
         [Button]
         void DiscoverOccupiable()
@@ -177,6 +177,23 @@ namespace Gimersia.Feature.Occupancy
                     break;
                 default:
                     throw new System.Exception("not yet supported scope: " + scope);
+            }
+        }
+        public void ShowDroppableTiles()
+        {
+            foreach (var occupiable in _occupancyGrid.Keys)
+            {
+                if (IsVacant(occupiable))
+                    _occupancyGrid[occupiable].ShowAvailableMarker();
+                else
+                    _occupancyGrid[occupiable].HideAvailableMarker();
+            }
+        }
+        public void HideDroppableTiles()
+        {
+            foreach (var occupiable in _occupancyGrid.Keys)
+            {
+                _occupancyGrid[occupiable].HideAvailableMarker();
             }
         }
     }

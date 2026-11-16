@@ -14,7 +14,7 @@ namespace Gimersia.Gameplay.DI {
             builder
                 .RegisterValue(_hudManager)
                 .RegisterValue(_dialogueSystem)
-                .RegisterType(typeof(OccupancyJudge), Lifetime.Singleton, Resolution.Eager);
+                .RegisterType(typeof(OccupancyManager), Lifetime.Singleton, Resolution.Eager);
         }
     }
 }
