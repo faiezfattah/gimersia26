@@ -9,10 +9,7 @@ namespace Gimersia.Gameplay
 {
     public class MouseInteractionHandler : MonoBehaviour
     {
-        [Inject] HUDManager _hud;
-        [Inject] DialogueSystem _dialogueSystem;
-        [Inject] OccupancyManager _occupancyManager;
-        public LevelSystem LevelSystem;
+        [Inject] GameplayInteractionCoordinator _interactionCoordinator;
 
         Camera _worldCamera;
         Draggable _currentDraggedObject;
@@ -99,9 +96,7 @@ namespace Gimersia.Gameplay
             if (!draggable.TryGetComponent<Entity>(out var entity))
                 throw new System.Exception($"Occupant with valid data doesnt exist on the draggable object {draggable.name}.");
 
-            _dialogueSystem.HideDialogue(entity.occupant.transform);
-            _hud.UpdateCard(entity);
-            _occupancyManager.ShowDroppableTiles();
+            _interactionCoordinator.OnPickUp(entity);
         }
         void OnDrag(Draggable draggable, Vector3 mouseWorldPosition)
         {
@@ -148,13 +143,7 @@ namespace Gimersia.Gameplay
             draggedObject.ResetRotation();
             _currentDraggedObject = null;
 
-            _occupancyManager.HideDroppableTiles();
-            LevelSystem.EvaluateLevel();
-
-            foreach (var v in _occupancyManager.GetViolations())
-            {
-                _dialogueSystem.ShowDialogue(v.Occupant.transform, v.Rule.ErrorText);
-            }
+            _interactionCoordinator.OnDrop();
         }
 
         void PlayWobble(Draggable draggable)

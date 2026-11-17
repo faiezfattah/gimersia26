@@ -1,4 +1,3 @@
-using Gimersia.Feature.Occupancy;
 using Reflex.Attributes;
 using TMPro;
 using UnityEngine;
@@ -8,7 +7,7 @@ namespace Gimersia.Gameplay
 {
     public class HUDManager : MonoBehaviour
     {
-        [Inject] OccupancyManager _judgingSystem;
+        [Inject] LevelSystem _levelSystem;
         public Image ProfileIcon;
         public TextMeshProUGUI Traits;
         public TextMeshProUGUI Rules;
@@ -20,6 +19,7 @@ namespace Gimersia.Gameplay
 
         void Start()
         {
+            _levelSystem.StartLevel();
             SubmitButton.onClick.AddListener(OnSubmit);
         }
         void OnDestroy()
@@ -28,12 +28,9 @@ namespace Gimersia.Gameplay
         }
         void OnSubmit()
         {
-            var violation = _judgingSystem.GetViolations();
-            Log.text = "Violations:\n";
-            foreach (var v in violation)
-            {
-                Log.text += v.ToString() + "\n";
-            }
+            var res = _levelSystem.EvaluateLevel();
+            if (res) _levelSystem.NextLevel();
+            
         }
 
         public void UpdateCard(Entity data)

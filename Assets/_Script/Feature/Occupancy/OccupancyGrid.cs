@@ -1,26 +1,35 @@
 using System.Collections.Generic;
 using Alchemy.Inspector;
 using Reflex.Attributes;
-using Reflex.Core;
+
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 namespace Gimersia.Feature.Occupancy
 {
-    public class OccupancyGrid : MonoBehaviour
+    public enum GridType
     {
-        [Inject] OccupancyManager _manager;
+        Overworld,
+        Stage
+    }
+    [SourceGeneratorInjectable]
+    public partial class OccupancyGrid : MonoBehaviour
+    {
+        OccupancyManager _manager;
+
         public Tilemap tilemap;
+        public GridType gridType;
 
-        [ShowInInspector]
         Dictionary<Vector2Int, Occupiable> _occupancyGrid = new();
-
-        [ShowInInspector]
         Dictionary<Vector2Int, Occupant> _occupants = new();
-        void Awake()
+
+        [Inject]
+        void Inject(OccupancyManager manager)
         {
-            DiscoverOccupiable();
+            Debug.Log($"OccupancyGrid Injected with manager: {manager}");
+            _manager = manager;
             _manager.AddGrid(this);
+            DiscoverOccupiable();
         }
         void OnDestroy()
         {
@@ -50,6 +59,8 @@ namespace Gimersia.Feature.Occupancy
                 return false;
 
             _occupants[position] = occupant;
+            occupant.transform.SetParent(tilemap.transform, false);
+            occupant.transform.position = tilemap.GetCellCenterWorld((Vector3Int)position);
 
             return true;
         }
@@ -79,11 +90,28 @@ namespace Gimersia.Feature.Occupancy
         {
             return !_occupants.ContainsKey(position);
         }
-        
+        public bool TryGetVacantTiles(List<Vector2Int> into)
+        {
+            var hasVacant = false;
+            foreach (var kvp in _occupancyGrid)
+            {
+                if (!_occupants.ContainsKey(kvp.Key))
+                {
+                    into.Add(kvp.Key);
+                    hasVacant = true;
+                }
+            }
+            
+            return hasVacant;
+        }
 
         public bool IsOccupied(Vector2Int position)
         {
             return _occupancyGrid.TryGetValue(position, out var occupiable);
+        }
+        public bool TryGetTileAt(Vector2Int position, out Occupiable occupiable)
+        {
+            return _occupancyGrid.TryGetValue(position, out occupiable);
         }
 
         /// <returns>true if there is a violation</returns>

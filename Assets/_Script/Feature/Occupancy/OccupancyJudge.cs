@@ -8,6 +8,15 @@ public class OccupancyManager
 {
     [SerializeField, ReadOnly] List<OccupancyGrid> _grids = new();
 
+    public OccupancyGrid GetOverworldGrid()
+    {
+        foreach (var grid in _grids)
+        {
+            if (grid.gridType == GridType.Overworld) return grid;
+        }
+        return null;
+    }
+
     public void AddGrid(OccupancyGrid grid)
     {
         if (!_grids.Contains(grid)) _grids.Add(grid);
