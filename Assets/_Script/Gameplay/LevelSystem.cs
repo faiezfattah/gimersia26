@@ -2,7 +2,9 @@ using Reflex.Attributes;
 using Reflex.Core;
 using Reflex.Injectors;
 using UnityEngine;
+
 using static UnityEngine.Object;
+
 namespace Gimersia.Gameplay
 {
     [SourceGeneratorInjectable]
@@ -11,22 +13,32 @@ namespace Gimersia.Gameplay
         [Inject] OccupancyManager _judge;
         [Inject] LevelData[] _levelDatas;
         [Inject] Container _diContainer;
+        [Inject] WinScreen _winScreen;
 
         int _currentLevelIndex = 0;
-        
+
         Transform _currentBus;
         EntitySpawner _spawner = new();
 
-        public bool EvaluateLevel()
+        public void Submit()
         {
-            Debug.Assert(_judge != null, "OccupancyJudge is not injected.");
+            if (!Judge()) return;
 
-            var verdict = _judge.HasViolations();
+            NextLevel();
+        }
+        public bool Judge()
+        {
+            var hasViolation = _judge.HasViolations();
 
-            if (verdict) Debug.Log("Level failed bro");
-            else Debug.Log("Level passed bro");
-
-            return verdict;
+            Debug.Log($"Level {_currentLevelIndex} hasViolation: {hasViolation}");
+            if (hasViolation)
+            {
+                foreach (var violation in _judge.GetViolations())
+                {
+                    Debug.Log($"Violation: {violation.Rule.ErrorText} for {violation.Cell}");
+                }
+            }
+            return !hasViolation;
         }
         public void StartLevel()
         {
@@ -38,12 +50,15 @@ namespace Gimersia.Gameplay
 
         public void NextLevel()
         {
-            // clean up current state
+            Destroy(_currentBus.gameObject);
             _currentLevelIndex++;
-            // prepare the next level
-            
-            // spawn the new bus
-            // get the grid 
+            if (_currentLevelIndex < _levelDatas.Length)
+            {
+                StartLevel();
+                return;
+            }
+
+            _winScreen.Show();
         }
     }
 }

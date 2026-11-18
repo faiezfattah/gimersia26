@@ -10,12 +10,14 @@ namespace Gimersia.Gameplay.DI {
         [SerializeField] HUDManager _hudManager;
         [SerializeField] DialogueSystem _dialogueSystem;
         [SerializeField] LevelData[] _levelDatas;
+        [SerializeField] WinScreen _winScreen;
         public void InstallBindings(ContainerBuilder builder)
         {
             builder
                 .RegisterValue(_hudManager)
                 .RegisterValue(_dialogueSystem)
                 .RegisterValue(_levelDatas)
+                .RegisterValue(_winScreen)
                 .RegisterType(typeof(LevelSystem), Lifetime.Singleton, Resolution.Eager)
                 .RegisterType(typeof(GameplayInteractionCoordinator), Lifetime.Singleton, Resolution.Eager)
                 .RegisterType(typeof(OccupancyManager), Lifetime.Singleton, Resolution.Eager);

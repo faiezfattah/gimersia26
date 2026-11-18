@@ -28,9 +28,7 @@ namespace Gimersia.Gameplay
         }
         void OnSubmit()
         {
-            var res = _levelSystem.EvaluateLevel();
-            if (res) _levelSystem.NextLevel();
-            
+            _levelSystem.Submit();
         }
 
         public void UpdateCard(Entity data)

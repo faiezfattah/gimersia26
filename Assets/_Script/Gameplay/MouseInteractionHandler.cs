@@ -80,7 +80,6 @@ namespace Gimersia.Gameplay
         }
         void OnPickUp(Draggable draggable, Vector3 mouseWorldPosition)
         {
-
             CancelWobble();
 
             draggable.ResetRotation();
@@ -134,9 +133,9 @@ namespace Gimersia.Gameplay
                 draggedObject.TryGetComponent(out Occupant occupant) &&
                 dropTarget.TryGetComponent<Occupiable>(out var occupiable))
             {
-                occupiable.Grid.TryVacate(occupant);     // remove previous occupancy if any
-                accepted = occupiable.Grid.TryOccupy(occupant, dropTarget.transform.position);
-                _currentDraggedObject.transform.parent = dropTarget.transform;
+                accepted = _interactionCoordinator.TryMove(occupant, occupiable);
+                if (accepted)
+                    _currentDraggedObject.transform.parent = dropTarget.transform;
             }
 
             draggedObject.EndDrag(accepted ? dropTarget : null);

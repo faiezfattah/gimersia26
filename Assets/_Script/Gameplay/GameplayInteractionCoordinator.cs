@@ -21,14 +21,15 @@ namespace Gimersia.Gameplay
         public void OnDrop()
         {
             _occupancyManager.HideDroppableTiles();
-            _levelSystem.EvaluateLevel();
+           if (_levelSystem.Judge()) return;
 
             foreach (var violation in _occupancyManager.GetViolations())
-            {
-                _dialogueSystem.ShowDialogue(
-                    violation.Occupant.transform,
-                    violation.Rule.ErrorText);
-            }
+                _dialogueSystem.ShowDialogue(violation.Occupant.transform, violation.Rule.ErrorText);
+        }
+
+        public bool TryMove(Occupant occupant, Occupiable destination)
+        {
+            return _occupancyManager.TryMove(occupant, destination);
         }
     }
 }

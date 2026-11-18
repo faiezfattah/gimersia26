@@ -20,8 +20,8 @@ namespace Gimersia.Feature.Occupancy
         public Tilemap tilemap;
         public GridType gridType;
 
-        Dictionary<Vector2Int, Occupiable> _occupancyGrid = new();
-        Dictionary<Vector2Int, Occupant> _occupants = new();
+        [ShowInInspector] Dictionary<Vector2Int, Occupiable> _occupancyGrid = new();
+        [ShowInInspector] Dictionary<Vector2Int, Occupant> _occupants = new();
 
         [Inject]
         void Inject(OccupancyManager manager)
@@ -33,7 +33,7 @@ namespace Gimersia.Feature.Occupancy
         }
         void OnDestroy()
         {
-            _manager.RemoveGrid(this);
+            if (_manager != null) _manager.RemoveGrid(this);
         }
         [Button]
         void DiscoverOccupiable()
@@ -49,6 +49,11 @@ namespace Gimersia.Feature.Occupancy
         [Button]
         public void ClearOccupants()
         {
+            foreach (var occupant in _occupants.Values)
+            {
+                occupant.Position = null;
+                occupant.Grid = null;
+            }
             _occupants.Clear();
         }
 
@@ -61,6 +66,9 @@ namespace Gimersia.Feature.Occupancy
             _occupants[position] = occupant;
             occupant.transform.SetParent(tilemap.transform, false);
             occupant.transform.position = tilemap.GetCellCenterWorld((Vector3Int)position);
+
+            occupant.Position = position;
+            occupant.Grid = this;
 
             return true;
         }
@@ -76,15 +84,17 @@ namespace Gimersia.Feature.Occupancy
         }
         public bool TryVacate(Occupant occupant)
         {
-            foreach (var kvp in _occupants)
-            {
-                if (kvp.Value == occupant)
-                {
-                    _occupants.Remove(kvp.Key);
-                    return true;
-                }
-            }
-            return false;
+            if (!occupant.Position.HasValue) return false;
+            var pos = occupant.Position.Value;
+            if (!_occupants.TryGetValue(pos, out var current) || current != occupant) return false;
+
+            _occupants.Remove(pos);
+            occupant.Position = null;
+            if (occupant.Grid == this)
+                occupant.Grid = null;
+
+            Debug.Assert(_occupants.ContainsKey(pos) == false, $"Occupant {occupant.name} was not removed from the grid {name}.");
+            return true;
         }
         public bool IsVacant(Vector2Int position)
         {
@@ -107,7 +117,7 @@ namespace Gimersia.Feature.Occupancy
 
         public bool IsOccupied(Vector2Int position)
         {
-            return _occupancyGrid.TryGetValue(position, out var occupiable);
+            return _occupancyGrid.TryGetValue(position, out var tile) && _occupants.ContainsKey(position);
         }
         public bool TryGetTileAt(Vector2Int position, out Occupiable occupiable)
         {
@@ -194,12 +204,14 @@ namespace Gimersia.Feature.Occupancy
                 case Scope.Column:
                     for (int y = -extent; y <= extent; y++)
                     {
+                        if (y == 0) continue;
                         yield return origin + new Vector2Int(0, y);
                     }
                     break;
                 case Scope.Row:
                     for (int x = -extent; x <= extent; x++)
                     {
+                        if (x == 0) continue;
                         yield return origin + new Vector2Int(x, 0);
                     }
                     break;

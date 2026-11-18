@@ -28,6 +28,40 @@ public class OccupancyManager
         else Debug.LogError($"Grid {grid.name} is not registered in JudgingSystem.");
     }
 
+    public bool TryMove(Occupant occupant, Occupiable destination)
+    {
+        if (occupant == null || destination == null || destination.Grid == null)
+            return false;
+
+        var destinationGrid = destination.Grid;
+        var destinationPosition = (Vector2Int)destinationGrid.tilemap.WorldToCell(destination.transform.position);
+
+        if (!destinationGrid.IsVacant(destinationPosition))
+        {
+            if (occupant.Grid == destinationGrid &&
+                occupant.Position == destinationPosition)
+                return true;
+            return false;
+        }
+
+        var sourceGrid = occupant.Grid;
+        var sourcePosition = occupant.Position;
+
+        if (sourceGrid != null && sourcePosition.HasValue)
+        {
+            if (!sourceGrid.TryVacate(occupant))
+                return false;
+        }
+
+        if (destinationGrid.TryOccupy(occupant, destinationPosition))
+            return true;
+
+        if (sourceGrid != null && sourcePosition.HasValue)
+            sourceGrid.TryOccupy(occupant, sourcePosition.Value);
+
+        return false;
+    }
+
     public List<Violation> GetViolations()
     {
         var v = new List<Violation>();
@@ -47,7 +81,7 @@ public class OccupancyManager
             {
                 grid.GetViolations(violations);
             }
-            return violations.Count == 0;
+            return violations.Count > 0;
         }
     }
     public void ShowDroppableTiles()

@@ -29,7 +29,10 @@ namespace Gimersia.Gameplay
                         Debug.LogError($"Failed to get tile at position {occupiableTile}.");
                     }
                     
-                    grid.TryOccupy(entity.GetComponent<Occupant>(), tile);
+                    if (!grid.TryOccupy(entity.GetComponent<Occupant>(), tile))
+                    {
+                        Debug.LogError($"Failed to occupy tile at position {occupiableTile} with entity {entity.name}.");
+                    }
                 }
             }
         }
@@ -43,8 +46,9 @@ namespace Gimersia.Gameplay
             }
 
             int randomIndex = Random.Range(0, vacantTiles.Count);
+            var selectedTile = vacantTiles[randomIndex];
             vacantTiles.RemoveAt(randomIndex);
-            return vacantTiles[randomIndex];
+            return selectedTile;
         }
     }
 }
