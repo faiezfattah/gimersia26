@@ -28,7 +28,7 @@ public class OccupancyManager
         else Debug.LogError($"Grid {grid.name} is not registered in JudgingSystem.");
     }
 
-    public bool TryMove(Occupant occupant, Occupiable destination)
+    public bool TryMoveOccupant(Occupant occupant, Occupiable destination)
     {
         if (occupant == null || destination == null || destination.Grid == null)
             return false;

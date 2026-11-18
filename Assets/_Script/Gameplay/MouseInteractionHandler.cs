@@ -54,7 +54,7 @@ namespace Gimersia.Gameplay
                 if (Mouse.current.leftButton.wasPressedThisFrame)
                 {
                     _currentDraggedObject = draggable;
-                    OnPickUp(draggable, mouseWorldPosition);
+                    BeginDrag(draggable, mouseWorldPosition);
                 }
                 else
                 {
@@ -78,7 +78,7 @@ namespace Gimersia.Gameplay
         {
             Debug.Log($"Hovering over {draggable.name}");
         }
-        void OnPickUp(Draggable draggable, Vector3 mouseWorldPosition)
+        void BeginDrag(Draggable draggable, Vector3 mouseWorldPosition)
         {
             CancelWobble();
 
@@ -127,22 +127,31 @@ namespace Gimersia.Gameplay
         void OnDrop(Droppable dropTarget)
         {
             var draggedObject = _currentDraggedObject;
-            var accepted = false;
-
-            if (dropTarget != null &&
-                draggedObject.TryGetComponent(out Occupant occupant) &&
-                dropTarget.TryGetComponent<Occupiable>(out var occupiable))
-            {
-                accepted = _interactionCoordinator.TryMove(occupant, occupiable);
-                if (accepted)
-                    _currentDraggedObject.transform.parent = dropTarget.transform;
-            }
+            var accepted = TryAcceptDrop(draggedObject, dropTarget);
 
             draggedObject.EndDrag(accepted ? dropTarget : null);
             draggedObject.ResetRotation();
             _currentDraggedObject = null;
 
-            _interactionCoordinator.OnDrop();
+            _interactionCoordinator.CompleteDrop();
+        }
+
+        bool TryAcceptDrop(Draggable draggedObject, Droppable dropTarget)
+        {
+            if (draggedObject == null || dropTarget == null)
+                return false;
+
+            if (!draggedObject.TryGetComponent(out Entity entity))
+                return false;
+
+            if (!dropTarget.TryGetComponent(out Occupiable destination))
+                return false;
+
+            if (!_interactionCoordinator.TryDropEntity(entity, destination))
+                return false;
+
+            draggedObject.transform.parent = dropTarget.transform;
+            return true;
         }
 
         void PlayWobble(Draggable draggable)

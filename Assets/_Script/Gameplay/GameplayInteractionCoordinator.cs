@@ -18,18 +18,21 @@ namespace Gimersia.Gameplay
             _occupancyManager.ShowDroppableTiles();
         }
 
-        public void OnDrop()
+        public void CompleteDrop()
         {
             _occupancyManager.HideDroppableTiles();
-           if (_levelSystem.Judge()) return;
+            if (_levelSystem.Judge()) return;
 
             foreach (var violation in _occupancyManager.GetViolations())
                 _dialogueSystem.ShowDialogue(violation.Occupant.transform, violation.Rule.ErrorText);
         }
 
-        public bool TryMove(Occupant occupant, Occupiable destination)
+        public bool TryDropEntity(Entity entity, Occupiable destination)
         {
-            return _occupancyManager.TryMove(occupant, destination);
+            if (entity == null)
+                return false;
+
+            return _occupancyManager.TryMoveOccupant(entity.occupant, destination);
         }
     }
 }
