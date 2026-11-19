@@ -1207,7 +1207,7 @@ PrefabInstance:
       objectReference: {fileID: 1534201748}
     - target: {fileID: -6125319622232116533, guid: c6b452c4a462bff48a7650f1d459c7c4, type: 3}
       propertyPath: _levelDatas.Array.size
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -6125319622232116533, guid: c6b452c4a462bff48a7650f1d459c7c4, type: 3}
       propertyPath: '_levelDatas.Array.data[1]'
@@ -2702,6 +2702,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1442415295}
   m_CullTransparentMesh: 1
+--- !u!1 &1442597980
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1442597982}
+  - component: {fileID: 1442597981}
+  m_Layer: 0
+  m_Name: VFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1442597981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442597980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02337a5d2ef136f439741f3dd2555230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Gameplay.DragnDropVFX
+  EntityDropVFX:
+    VFXPrefab: {fileID: 2690533686706637417, guid: 76785d3df3a40874a854fe39ab49e3bf, type: 3}
+    DefaultCapacity: 3
+    MaxSize: 10
+    CollectionCheck: 1
+--- !u!4 &1442597982
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442597980}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1471568701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4118,3 +4167,4 @@ SceneRoots:
   - {fileID: 1051958381}
   - {fileID: 1966704635}
   - {fileID: 578605958}
+  - {fileID: 1442597982}
