@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 153471298}
   - component: {fileID: 153471297}
   - component: {fileID: 153471300}
+  - component: {fileID: 153471301}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -256,6 +257,19 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &153471301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153471296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9ab8a35dad0e7345a00627689499327, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.CustomCursor.CustomCursorWorldInteraction
+  _worldCamera: {fileID: 153471298}
 --- !u!1 &226779581
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,6 +791,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3968347140748169695, guid: 96e5251bfe99bb946bdda47dede7f352, type: 3}
   m_PrefabInstance: {fileID: 540897598}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &578605958
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1590652282077187995, guid: f41a395588eb11d4294218ab4ec14541, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 13.35671
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590652282077187995, guid: f41a395588eb11d4294218ab4ec14541, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 31.11972
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590652282077187995, guid: f41a395588eb11d4294218ab4ec14541, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590652282077187995, guid: f41a395588eb11d4294218ab4ec14541, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590652282077187995, guid: f41a395588eb11d4294218ab4ec14541, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590652282077187995, guid: f41a395588eb11d4294218ab4ec14541, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590652282077187995, guid: f41a395588eb11d4294218ab4ec14541, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590652282077187995, guid: f41a395588eb11d4294218ab4ec14541, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590652282077187995, guid: f41a395588eb11d4294218ab4ec14541, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590652282077187995, guid: f41a395588eb11d4294218ab4ec14541, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442448808996994550, guid: f41a395588eb11d4294218ab4ec14541, type: 3}
+      propertyPath: m_Name
+      value: CustomCursorSystem
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f41a395588eb11d4294218ab4ec14541, type: 3}
 --- !u!1001 &709594690
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4046,3 +4117,4 @@ SceneRoots:
   - {fileID: 1527073220}
   - {fileID: 1051958381}
   - {fileID: 1966704635}
+  - {fileID: 578605958}
