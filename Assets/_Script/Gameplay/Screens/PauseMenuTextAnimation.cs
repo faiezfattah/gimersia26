@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Alchemy.Inspector;
+using Gimersia.Feature.Screens;
 using LitMotion;
 using LitMotion.Extensions;
 using TMPro;
@@ -7,15 +8,18 @@ using UnityEngine;
 
 namespace Gimersia.Gameplay.Screen
 {
-    public class PauseMenuTextAnimation : MonoBehaviour
+    public class PauseMenuTextAnimation : Screens
     {
         public TextMeshProUGUI text;
         public float distance = 30;
         public float duration = 1;
         public float delay = 0.1f;
         public Ease ease = Ease.InOutQuad;
-        
+
         List<MotionHandle> _handles = new();
+        private void OnEnable() {
+            AnimateText();
+        }
         
         [Button]
         void AnimateText()

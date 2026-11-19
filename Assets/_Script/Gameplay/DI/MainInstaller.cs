@@ -1,4 +1,5 @@
-using Gimersia.Feature.Occupancy;
+using Gimersia.Core;
+using Gimersia.Feature.Screens;
 using Reflex.Core;
 using UnityEngine;
 
@@ -10,17 +11,22 @@ namespace Gimersia.Gameplay.DI {
         [SerializeField] HUDManager _hudManager;
         [SerializeField] DialogueSystem _dialogueSystem;
         [SerializeField] LevelData[] _levelDatas;
-        [SerializeField] WinScreen _winScreen;
+        [SerializeField] ScreenManager _screens;
         public void InstallBindings(ContainerBuilder builder)
         {
             builder
                 .RegisterValue(_hudManager)
                 .RegisterValue(_dialogueSystem)
                 .RegisterValue(_levelDatas)
-                .RegisterValue(_winScreen)
+                .RegisterValue(_screens)
                 .RegisterType(typeof(LevelSystem), Lifetime.Singleton, Resolution.Eager)
                 .RegisterType(typeof(GameplayInteractionCoordinator), Lifetime.Singleton, Resolution.Eager)
-                .RegisterType(typeof(OccupancyManager), Lifetime.Singleton, Resolution.Eager);
+                .RegisterType(typeof(OccupancyManager), Lifetime.Singleton, Resolution.Eager)
+                .RegisterFactory((e) => {
+                     var inputMap = new InputMap();
+                    inputMap.Enable();
+                     return inputMap;
+                }, Lifetime.Singleton, Resolution.Eager);
         }
     }
 }

@@ -1,3 +1,4 @@
+using Gimersia.Feature.Screens;
 using Reflex.Attributes;
 using Reflex.Core;
 using Reflex.Injectors;
@@ -13,7 +14,7 @@ namespace Gimersia.Gameplay
         [Inject] OccupancyManager _judge;
         [Inject] LevelData[] _levelDatas;
         [Inject] Container _diContainer;
-        [Inject] WinScreen _winScreen;
+        [Inject] ScreenManager _screens;
 
         int _currentLevelIndex = 0;
 
@@ -58,7 +59,7 @@ namespace Gimersia.Gameplay
                 return;
             }
 
-            _winScreen.Show();
+            _screens.ShowScreen("Win");
         }
     }
 }
