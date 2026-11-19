@@ -62,6 +62,7 @@ MonoBehaviour:
   _dialogueSystem: {fileID: 0}
   _levelDatas:
   - {fileID: 11400000, guid: 0ea1cd8407cce7b42881433b1eaaa0e6, type: 2}
+  _winScreen: {fileID: 0}
 --- !u!1 &6245825705518848312
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,3 +107,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f588a08752ded4baf04ea676cf218d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Gameplay.DragAndDrop.MouseInteractionHandler
+  DroppableLayerMask:
+    serializedVersion: 2
+    m_Bits: 8

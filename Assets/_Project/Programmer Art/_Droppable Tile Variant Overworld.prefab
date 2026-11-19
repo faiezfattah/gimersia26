@@ -12,9 +12,21 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -1371679797, guid: 3af76964f4a67e4419aef2aace705915, type: 3}
+    - target: {fileID: 2199867411670282624, guid: 6a370756405cdb245b6178c8012abb86, type: 3}
+      propertyPath: m_Name
+      value: Droppable
+      objectReference: {fileID: 0}
     - target: {fileID: 2745386991573120207, guid: 6a370756405cdb245b6178c8012abb86, type: 3}
       propertyPath: m_Name
       value: _Droppable Tile Variant Overworld
+      objectReference: {fileID: 0}
+    - target: {fileID: 5249595850701687341, guid: 6a370756405cdb245b6178c8012abb86, type: 3}
+      propertyPath: m_Color.a
+      value: 0.6156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 5249595850701687341, guid: 6a370756405cdb245b6178c8012abb86, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9105665520044629868, guid: 6a370756405cdb245b6178c8012abb86, type: 3}
       propertyPath: m_LocalPosition.x

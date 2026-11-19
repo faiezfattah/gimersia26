@@ -10,19 +10,18 @@ namespace Gimersia.Gameplay
     public class MouseInteractionHandler : MonoBehaviour
     {
         [Inject] GameplayInteractionCoordinator _interactionCoordinator;
+        public LayerMask DroppableLayerMask;
 
         Camera _worldCamera;
         Draggable _currentDraggedObject;
         Vector3 _prevMousePos;
-        MotionHandle _wobbleMotion;
         float _dragAngle;
         float _dragAngularVelocity;
         float _horizontalMouseVelocity;
         float _horizontalMouseVelocitySmoothing;
+        Draggable _hoveredDraggable;
+        Droppable _hoveredDroppable;
 
-        const float WobbleDuration = 2f;
-        const float WobbleAngle = 30f;
-        const float WobbleCycles = 1.35f;
         const float MaximumDragAngle = 50f;
         const float DragAngleSensitivity = 10f;
         const float MouseVelocitySmoothTime = 0.05f;
@@ -43,6 +42,8 @@ namespace Gimersia.Gameplay
             if (_worldCamera == null || Mouse.current == null) return;
 
             var mouseWorldPosition = GetMouseWorldPosition();
+            UpdateDraggableHover(mouseWorldPosition);
+            UpdateDroppableHover(mouseWorldPosition);
 
             if (_currentDraggedObject == null)
             {
@@ -55,10 +56,6 @@ namespace Gimersia.Gameplay
                 {
                     _currentDraggedObject = draggable;
                     BeginDrag(draggable, mouseWorldPosition);
-                }
-                else
-                {
-                    OnHover(draggable);
                 }
             }
 
@@ -74,14 +71,9 @@ namespace Gimersia.Gameplay
             var dropTarget = FindDroppable(mouseWorldPosition);
             OnDrop(dropTarget);
         }
-        void OnHover(Draggable draggable)
-        {
-            Debug.Log($"Hovering over {draggable.name}");
-        }
+        
         void BeginDrag(Draggable draggable, Vector3 mouseWorldPosition)
         {
-            CancelWobble();
-
             draggable.ResetRotation();
             draggable.BeginDrag();
             draggable.SetTopCenterPosition(mouseWorldPosition);
@@ -97,6 +89,7 @@ namespace Gimersia.Gameplay
 
             _interactionCoordinator.OnPickUp(entity);
         }
+        
         void OnDrag(Draggable draggable, Vector3 mouseWorldPosition)
         {
             var horizontalSpeed = (mouseWorldPosition.x - _prevMousePos.x)
@@ -122,6 +115,59 @@ namespace Gimersia.Gameplay
             _currentDraggedObject.SetTopCenterPosition(mouseWorldPosition);
             _prevMousePos = mouseWorldPosition;
 
+            _interactionCoordinator.OnDrag(draggable, _hoveredDroppable);
+        }
+
+        void UpdateDraggableHover(Vector3 mouseWorldPosition)
+        {
+            var draggable = FindDraggable(mouseWorldPosition);
+
+            if (draggable == _hoveredDraggable)
+                return;
+
+            if (_hoveredDraggable != null)
+                OnHoverExit(_hoveredDraggable);
+
+            _hoveredDraggable = draggable;
+
+            if (_hoveredDraggable != null)
+                OnHoverEnter(_hoveredDraggable);
+        }
+
+        void UpdateDroppableHover(Vector3 mouseWorldPosition)
+        {
+            var droppable = FindDroppable(mouseWorldPosition);
+
+            if (droppable == _hoveredDroppable)
+                return;
+
+            if (_hoveredDroppable != null)
+                OnDroppableHoverExit(_hoveredDroppable);
+
+            _hoveredDroppable = droppable;
+
+            if (_hoveredDroppable != null)
+                OnDroppableHoverEnter(_hoveredDroppable);
+        }
+
+        void OnHoverEnter(Draggable draggable)
+        {
+            _interactionCoordinator.OnHover(draggable);
+        }
+
+        void OnHoverExit(Draggable draggable)
+        {
+            _interactionCoordinator.OnHoverExit(draggable);
+        }
+
+        void OnDroppableHoverEnter(Droppable droppable)
+        {
+            Debug.Log($"Droppable hover entered: {droppable.name}");
+        }
+
+        void OnDroppableHoverExit(Droppable droppable)
+        {
+            Debug.Log($"Droppable hover exited: {droppable.name}");
         }
 
         void OnDrop(Droppable dropTarget)
@@ -133,7 +179,7 @@ namespace Gimersia.Gameplay
             draggedObject.ResetRotation();
             _currentDraggedObject = null;
 
-            _interactionCoordinator.CompleteDrop();
+            _interactionCoordinator.OnDrop();
         }
 
         bool TryAcceptDrop(Draggable draggedObject, Droppable dropTarget)
@@ -152,34 +198,6 @@ namespace Gimersia.Gameplay
 
             draggedObject.transform.parent = dropTarget.transform;
             return true;
-        }
-
-        void PlayWobble(Draggable draggable)
-        {
-            _wobbleMotion = LMotion.Create(0f, 1f, WobbleDuration)
-                .WithEase(Ease.OutQuad)
-                .Bind(progress =>
-                {
-                    var wobble = Mathf.Sin(progress * Mathf.PI * 2f * WobbleCycles)
-                        * WobbleAngle
-                        * (1f - progress);
-                    if (progress >= 0.999f)
-                    {
-                        draggable.ResetRotation();
-                        return;
-                    }
-
-                    draggable.transform.rotation = draggable.DefaultRotation
-                        * Quaternion.Euler(0f, 0f, wobble);
-                });
-        }
-
-        void CancelWobble()
-        {
-            if (_wobbleMotion.IsActive())
-            {
-                _wobbleMotion.TryCancel();
-            }
         }
 
         Vector3 GetMouseWorldPosition()
@@ -206,9 +224,9 @@ namespace Gimersia.Gameplay
             return null;
         }
 
-        static Droppable FindDroppable(Vector3 position)
+        Droppable FindDroppable(Vector3 position)
         {
-            foreach (var collider in Physics2D.OverlapPointAll(position))
+            foreach (var collider in Physics2D.OverlapPointAll(position, DroppableLayerMask))
             {
                 var droppable = collider.GetComponentInParent<Droppable>();
                 if (droppable != null)

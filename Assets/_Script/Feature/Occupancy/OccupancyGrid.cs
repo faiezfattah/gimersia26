@@ -129,45 +129,94 @@ namespace Gimersia.Feature.Occupancy
         {
             var hasViolation = false;
 
-            foreach (var (cell, occupant) in _occupants)
+            foreach (var occupant in _occupants.Values)
             {
-                foreach (var rule in occupant.Rules)
+                hasViolation |= GetViolations(occupant, into);
+            }
+            return hasViolation;
+        }
+        public bool GetViolations(Occupant occupant, List<Violation> into)
+        {
+            if (!occupant.Position.HasValue) return false;
+            var cell = occupant.Position.Value;
+            return GetViolationsAt(occupant, cell, null, into);
+        }
+
+        public bool TryGetSimulatedViolations(Occupant occupant, Occupiable destination, List<Violation> into)
+        {
+            if (occupant == null || destination == null || destination.Grid != this)
+                return false;
+
+            var simulatedPosition = (Vector2Int)tilemap.WorldToCell(destination.transform.position);
+            if (!_occupancyGrid.TryGetValue(simulatedPosition, out var occupiable) ||
+                occupiable != destination)
+                return false;
+
+            if (_occupants.TryGetValue(simulatedPosition, out var occupantAtDestination) &&
+                occupantAtDestination != occupant)
+                return false;
+
+            return GetViolationsAt(occupant, simulatedPosition, occupant, into);
+        }
+
+        bool GetViolationsAt(Occupant occupant, Vector2Int cell, Occupant simulatedOccupant, List<Violation> into)
+        {
+            var hasViolation = false;
+
+            foreach (var rule in occupant.Rules)
+            {
+                var offenders = new List<Vector2Int>();
+
+                foreach (var scopedCell in GetCellInScope(cell, rule.Scope, rule.Extent))
                 {
-                    var offenders = new List<Vector2Int>();
+                    var (entity, tile) = ResolveSubjectFlags(
+                        rule.Subject,
+                        scopedCell,
+                        simulatedOccupant,
+                        cell);
 
-                    foreach (var scopedCell in GetCellInScope(cell, rule.Scope, rule.Extent))
+                    switch (rule.Polarity, entity & rule.TargetEntity, tile & rule.TargetTile)
                     {
-                        var (entity, tile) = ResolveSubjectFlags(rule.Subject, scopedCell);
-
-                        switch (rule.Polarity, entity & rule.TargetEntity, tile & rule.TargetTile)
-                        {
-                            case (Polarity.Require, 0, 0):
-                            case (Polarity.Avoid, not 0, _):
-                            case (Polarity.Avoid, _, not 0):
-                                offenders.Add(scopedCell);
-                                break;
-                            default:
-                                break;
-                        }
+                        case (Polarity.Require, 0, 0):
+                        case (Polarity.Avoid, not 0, _):
+                        case (Polarity.Avoid, _, not 0):
+                            offenders.Add(scopedCell);
+                            break;
+                        default:
+                            break;
                     }
+                }
 
-                    if (offenders.Count > 0)
-                    {
-                        into.Add(new Violation(cell, occupant, rule, offenders));
-                        hasViolation = true;
-                    }
+                if (offenders.Count > 0)
+                {
+                    into.Add(new Violation(cell, occupant, rule, offenders));
+                    hasViolation = true;
                 }
             }
             return hasViolation;
         }
 
-        (EntityTraitFlags, TileTraitFlags) ResolveSubjectFlags(Subject subject, Vector2Int cell)
+        (EntityTraitFlags, TileTraitFlags) ResolveSubjectFlags(
+            Subject subject,
+            Vector2Int cell,
+            Occupant simulatedOccupant,
+            Vector2Int simulatedPosition)
         {
             EntityTraitFlags entity = 0;
             TileTraitFlags tile = 0;
 
-            if ((subject & Subject.Entity) != 0 && _occupants.TryGetValue(cell, out var o))
-                entity = o.Data.Traits;
+            if ((subject & Subject.Entity) != 0)
+            {
+                if (simulatedOccupant != null && cell == simulatedPosition)
+                {
+                    entity = simulatedOccupant.Data.Traits;
+                }
+                else if (_occupants.TryGetValue(cell, out var occupant))
+                {
+                    if (simulatedOccupant == null || occupant != simulatedOccupant)
+                        entity = occupant.Data.Traits;
+                }
+            }
             if ((subject & Subject.Tile) != 0 && _occupancyGrid.TryGetValue(cell, out var t))
                 tile = t.Traits;
 
@@ -234,6 +283,25 @@ namespace Gimersia.Feature.Occupancy
             foreach (var occupiable in _occupancyGrid.Keys)
             {
                 _occupancyGrid[occupiable].HideAvailableMarker();
+            }
+        }
+        public void ShowViolatedTiles(List<Violation> violations)
+        {
+            HideViolatedTiles();
+            foreach (var v in violations)
+            {
+                foreach (var offender in v.Offenders)
+                {
+                    _occupancyGrid[offender].ShowViolatedMarker();
+                    Debug.Log($"Violation at {v.Cell} for occupant {v.Occupant.name} due to rule {v.Rule}");         
+                }
+            }
+        }
+        public void HideViolatedTiles()
+        {
+            foreach (var occupiable in _occupancyGrid.Keys)
+            {
+                _occupancyGrid[occupiable].HideViolatedMarker();
             }
         }
     }

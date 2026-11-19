@@ -1985,6 +1985,10 @@ PrefabInstance:
       propertyPath: LevelSystem
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1063741334217952866, guid: c6b452c4a462bff48a7650f1d459c7c4, type: 3}
+      propertyPath: DraggableLayerMask.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6344473620476279690, guid: c6b452c4a462bff48a7650f1d459c7c4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

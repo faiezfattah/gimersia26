@@ -31,7 +31,10 @@ public class OccupancyManager
     public bool TryMoveOccupant(Occupant occupant, Occupiable destination)
     {
         if (occupant == null || destination == null || destination.Grid == null)
+        {
+            Debug.LogError($"Invalid occupant or destination. Occupant: {occupant.name}, Destination: {destination.name}");
             return false;
+        }
 
         var destinationGrid = destination.Grid;
         var destinationPosition = (Vector2Int)destinationGrid.tilemap.WorldToCell(destination.transform.position);
@@ -72,6 +75,28 @@ public class OccupancyManager
         }
         
         return v;
+    }
+    public bool GetViolationsFor(Occupant occupant, List<Violation> into)
+    {
+        foreach (var grid in _grids)
+        {
+            grid.GetViolations(occupant, into);
+        }
+        return into.Count > 0;
+    }
+    public bool TryGetSimulatedViolations(Occupant occupant, Occupiable destination, List<Violation> into)
+    {
+        if (occupant == null || destination == null || destination.Grid == null)
+            return false;
+
+        return destination.Grid.TryGetSimulatedViolations(occupant, destination, into);
+    }
+    public void HideViolatedTiles()
+    {
+        foreach (var grid in _grids)
+        {
+            grid.HideViolatedTiles();
+        }
     }
     public bool HasViolations()
     {
