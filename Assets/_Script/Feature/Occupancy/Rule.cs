@@ -30,7 +30,6 @@ namespace Gimersia.Feature.Occupancy
         Self,
         Adjacent,
         Surrounding,
-        Near,
         Row,
         Column
     }

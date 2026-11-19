@@ -91,11 +91,11 @@ public class OccupancyManager
 
         return destination.Grid.TryGetSimulatedViolations(occupant, destination, into);
     }
-    public void HideViolatedTiles()
+    public void HideAllTileMarkers()
     {
         foreach (var grid in _grids)
         {
-            grid.HideViolatedTiles();
+            grid.HideAllMarkers();
         }
     }
     public bool HasViolations()

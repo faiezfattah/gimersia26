@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks.Triggers;
 using Gimersia.Feature.DragAndDrop;
 using Gimersia.Feature.Occupancy;
 using Reflex.Attributes;
@@ -25,7 +24,7 @@ namespace Gimersia.Gameplay
         public void OnDrop()
         {
             _occupancyManager.HideDroppableTiles();
-            _occupancyManager.HideViolatedTiles();
+            _occupancyManager.HideAllTileMarkers();
             if (_levelSystem.Judge()) return;
 
             foreach (var violation in _occupancyManager.GetViolations())
@@ -35,17 +34,20 @@ namespace Gimersia.Gameplay
         {
             if (!draggable.TryGetComponent(out Entity entity))
             {
-               Debug.LogError($"Draggable {draggable.name} does not have an Entity component.");
-               return; 
+                Debug.LogError($"Draggable {draggable.name} does not have an Entity component.");
+                return;
             }
 
-            _occupancyManager.HideViolatedTiles();
+            _occupancyManager.HideAllTileMarkers();
 
             if (droppable == null ||
                 !droppable.TryGetComponent(out Occupiable destination))
             {
                 return;
             }
+
+            var cell = destination.Grid.tilemap.WorldToCell(destination.transform.position);
+            destination.Grid.ShowHintTilesFor(entity.occupant, (Vector2Int)cell);
 
             using (ListPool<Violation>.Get(out var violations))
             {
@@ -62,7 +64,7 @@ namespace Gimersia.Gameplay
                 Debug.LogError($"Draggable {draggable.name} does not have an Entity component.");
                 return; 
             }
-
+                        
             using (ListPool<Violation>.Get(out var violations))
             {
                 if (!_occupancyManager.GetViolationsFor(entity.occupant, violations))
@@ -73,7 +75,7 @@ namespace Gimersia.Gameplay
         }
         public void OnHoverExit(Draggable draggable)
         {
-            _occupancyManager.HideViolatedTiles();
+            _occupancyManager.HideAllTileMarkers();
         }
         public bool TryDropEntity(Entity entity, Occupiable destination)
         {

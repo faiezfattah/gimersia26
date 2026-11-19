@@ -33,13 +33,13 @@
       "hash": "70c9b4e46a3b08ee8a13a61b71bb264f14446a7c"
     },
     "com.maligan.unity-zed": {
-      "version": "https://github.com/maligan/unity-zed.git",
+      "version": "https://github.com/arghhhhh/unity-zed.git#windows-support",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.ide.visualstudio": "2.0.20"
       },
-      "hash": "25f1b97fedb6cf7b4b566c4a83ec8311b68d3e82"
+      "hash": "b39eb32d576f18d52b8c5ca2f9aca59e38f04e84"
     },
     "com.unity.2d.animation": {
       "version": "13.0.6",

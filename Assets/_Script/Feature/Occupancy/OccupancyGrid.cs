@@ -304,5 +304,33 @@ namespace Gimersia.Feature.Occupancy
                 _occupancyGrid[occupiable].HideViolatedMarker();
             }
         }
+        public void ShowHintTilesFor(Occupant occupant, Vector2Int origin)
+        {
+            HideHintTiles();
+            foreach (var r in occupant.Rules)
+            {
+                foreach (var cell in GetCellInScope(origin, r.Scope, r.Extent))
+                {
+                    if (_occupancyGrid.TryGetValue(cell, out var occupiable))
+                    {
+                        occupiable.ShowHintMarker();
+                    }
+                }
+            }
+        }
+        public void HideHintTiles()
+        {
+            foreach (var occupiable in _occupancyGrid.Keys)
+            {
+                _occupancyGrid[occupiable].HideHintMarker();
+            }
+        }
+        public void HideAllMarkers()
+        {
+            foreach (var occupiable in _occupancyGrid.Values)
+            {
+                occupiable.HideAllMarkers();
+            }
+        }
     }
 }
