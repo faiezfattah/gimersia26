@@ -1,6 +1,7 @@
 using Gimersia.Feature.DragAndDrop;
 using Gimersia.Feature.Occupancy;
 using LitMotion;
+using Oneiric.Core.EventBus;
 using Reflex.Attributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -51,7 +52,7 @@ namespace Gimersia.Gameplay
                 if (draggable == null) return;
 
                 _prevMousePos = mouseWorldPosition;
-                
+
                 if (Mouse.current.leftButton.wasPressedThisFrame)
                 {
                     _currentDraggedObject = draggable;
@@ -71,7 +72,7 @@ namespace Gimersia.Gameplay
             var dropTarget = FindDroppable(mouseWorldPosition);
             OnDrop(dropTarget);
         }
-        
+
         void BeginDrag(Draggable draggable, Vector3 mouseWorldPosition)
         {
             draggable.ResetRotation();
@@ -89,7 +90,7 @@ namespace Gimersia.Gameplay
 
             _interactionCoordinator.OnPickUp(entity);
         }
-        
+
         void OnDrag(Draggable draggable, Vector3 mouseWorldPosition)
         {
             var horizontalSpeed = (mouseWorldPosition.x - _prevMousePos.x)
@@ -180,6 +181,11 @@ namespace Gimersia.Gameplay
             _currentDraggedObject = null;
 
             _interactionCoordinator.OnDrop();
+
+            EventBus.Raise(new EntityDropEvent(
+                draggedObject.GetComponent<Entity>(),
+                dropTarget?.GetComponent<Occupiable>(),
+                dropTarget.transform.position));
         }
 
         bool TryAcceptDrop(Draggable draggedObject, Droppable dropTarget)
@@ -236,6 +242,20 @@ namespace Gimersia.Gameplay
             }
 
             return null;
+        }
+    }
+    
+    public readonly struct EntityDropEvent : IEvent
+    {
+        public readonly Entity Entity;
+        public readonly Occupiable Destination;
+        public readonly Vector3 WorldPosition;
+
+        public EntityDropEvent(Entity entity, Occupiable destination, Vector3 worldPosition)
+        {
+            Entity = entity;
+            Destination = destination;
+            WorldPosition = worldPosition;
         }
     }
 }

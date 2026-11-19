@@ -62,9 +62,9 @@ namespace Gimersia.Gameplay
             if (!draggable.TryGetComponent(out Entity entity))
             {
                 Debug.LogError($"Draggable {draggable.name} does not have an Entity component.");
-                return; 
+                return;
             }
-                        
+
             using (ListPool<Violation>.Get(out var violations))
             {
                 if (!_occupancyManager.GetViolationsFor(entity.occupant, violations))
