@@ -1,3 +1,4 @@
+using System;
 using Gimersia.Core;
 using Gimersia.Feature.Screens;
 using Reflex.Core;
@@ -7,7 +8,8 @@ using Lifetime = Reflex.Enums.Lifetime;
 using Resolution = Reflex.Enums.Resolution;
 
 namespace Gimersia.Gameplay.DI {
-    public class MainInstaller : MonoBehaviour, IInstaller {
+    public class MainInstaller : MonoBehaviour, IInstaller
+    {
         [SerializeField] HUDManager _hudManager;
         [SerializeField] DialogueSystem _dialogueSystem;
         [SerializeField] LevelData[] _levelDatas;
@@ -22,11 +24,25 @@ namespace Gimersia.Gameplay.DI {
                 .RegisterType(typeof(LevelSystem), Lifetime.Singleton, Resolution.Eager)
                 .RegisterType(typeof(GameplayInteractionCoordinator), Lifetime.Singleton, Resolution.Eager)
                 .RegisterType(typeof(OccupancyManager), Lifetime.Singleton, Resolution.Eager)
-                .RegisterFactory((e) => {
-                     var inputMap = new InputMap();
-                    inputMap.Enable();
-                     return inputMap;
-                }, Lifetime.Singleton, Resolution.Eager);
+                .RegisterType(typeof(InputMap), Lifetime.Singleton, Resolution.Eager)
+                .RegisterType(typeof(InputMapLifecycle), Lifetime.Singleton, Resolution.Eager);
+        }
+    }
+    class InputMapLifecycle : IDisposable {
+        InputMap _map;
+        public InputMapLifecycle(InputMap inputMap)
+        {
+            _map = inputMap;
+            _map.UI.Enable();
+            _map.Main.Enable();
+            _map.Enable();
+        }
+
+        public void Dispose()
+        {
+            _map.UI.Disable();
+            _map.Main.Disable();
+            _map.Disable();
         }
     }
 }

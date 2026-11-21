@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Gimersia.Feature.Screens;
 using Reflex.Attributes;
 using Reflex.Core;
@@ -18,14 +19,14 @@ namespace Gimersia.Gameplay
 
         int _currentLevelIndex = 0;
 
-        Transform _currentBus;
+        CarAnimation _currentBus;
         EntitySpawner _spawner = new();
 
         public void Submit()
         {
             if (!Judge()) return;
 
-            NextLevel();
+            NextLevel().Forget(); ;
         }
         public bool Judge()
         {
@@ -46,11 +47,13 @@ namespace Gimersia.Gameplay
             var data = _levelDatas[_currentLevelIndex];
             _spawner.Spawn(_judge.GetOverworldGrid(), data);
             _currentBus = Instantiate(data.busPrefab);
+            _currentBus.AnimateIn();
             GameObjectInjector.InjectRecursive(_currentBus.gameObject, _diContainer);
         }
 
-        public void NextLevel()
+        public async UniTaskVoid NextLevel()
         {
+            await _currentBus.AnimateOut();
             Destroy(_currentBus.gameObject);
             _currentLevelIndex++;
             if (_currentLevelIndex < _levelDatas.Length)
