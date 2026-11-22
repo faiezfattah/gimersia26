@@ -18,10 +18,10 @@ namespace Gimersia.Feature.CustomCursor
         public bool IsButtonPressed => _currentMode == CustomCursorMode.ButtonPressed;
 
         [Header("Cursor Assets")]
-        [SerializeField] Texture2D _defaultCursor;
-        [SerializeField] Texture2D _draggableCursor;
-        [SerializeField] Texture2D _draggingCursor;
-        [SerializeField] Texture2D _buttonPressedCursor;
+        [SerializeField] Sprite _defaultCursor;
+        [SerializeField] Sprite _draggableCursor;
+        [SerializeField] Sprite _draggingCursor;
+        [SerializeField] Sprite _buttonPressedCursor;
 
         [Header("Cursor UI")]
         [SerializeField] Canvas _cursorCanvas;
@@ -30,10 +30,6 @@ namespace Gimersia.Feature.CustomCursor
         [SerializeField, Min(0.01f)] float _cursorScale = 1f;
 
         CustomCursorMode _currentMode = (CustomCursorMode)(-1);
-        Sprite _defaultSprite;
-        Sprite _draggableSprite;
-        Sprite _draggingSprite;
-        Sprite _buttonPressedSprite;
 
         void Awake()
         {
@@ -57,10 +53,6 @@ namespace Gimersia.Feature.CustomCursor
                 return;
             }
 
-            _defaultSprite = CreateCursorSprite(_defaultCursor);
-            _draggableSprite = CreateCursorSprite(_draggableCursor);
-            _draggingSprite = CreateCursorSprite(_draggingCursor);
-            _buttonPressedSprite = CreateCursorSprite(_buttonPressedCursor);
             _cursorImage.raycastTarget = false;
         }
 
@@ -96,11 +88,6 @@ namespace Gimersia.Feature.CustomCursor
         {
             if (Instance == this)
                 Instance = null;
-
-            DestroyCursorSprite(_defaultSprite);
-            DestroyCursorSprite(_draggableSprite);
-            DestroyCursorSprite(_draggingSprite);
-            DestroyCursorSprite(_buttonPressedSprite);
         }
 
         public void SetMode(CustomCursorMode mode)
@@ -110,16 +97,16 @@ namespace Gimersia.Feature.CustomCursor
 
             var sprite = mode switch
             {
-                CustomCursorMode.Draggable => _draggableSprite,
-                CustomCursorMode.Dragging => _draggingSprite,
-                CustomCursorMode.ButtonPressed => _buttonPressedSprite,
-                _ => _defaultSprite
+                CustomCursorMode.Draggable => _draggableCursor,
+                CustomCursorMode.Dragging => _draggingCursor,
+                CustomCursorMode.ButtonPressed => _buttonPressedCursor,
+                _ => _defaultCursor
             };
 
             if (sprite == null)
             {
                 Debug.LogError(
-                    $"{nameof(CustomCursorController)} has no cursor texture assigned for {mode}.",
+                    $"{nameof(CustomCursorController)} has no cursor sprite assigned for {mode}.",
                     this);
                 _currentMode = mode;
                 return;
@@ -132,24 +119,6 @@ namespace Gimersia.Feature.CustomCursor
                 _hotspot.x / sprite.rect.width,
                 1f - _hotspot.y / sprite.rect.height);
             _currentMode = mode;
-        }
-
-        static Sprite CreateCursorSprite(Texture2D texture)
-        {
-            if (texture == null)
-                return null;
-
-            return Sprite.Create(
-                texture,
-                new Rect(0f, 0f, texture.width, texture.height),
-                Vector2.zero,
-                100f);
-        }
-
-        static void DestroyCursorSprite(Sprite sprite)
-        {
-            if (sprite != null)
-                Destroy(sprite);
         }
     }
 }
