@@ -23,12 +23,6 @@ namespace Gimersia.Gameplay
         Draggable _hoveredDraggable;
         Droppable _hoveredDroppable;
 
-        const float MaximumDragAngle = 50f;
-        const float DragAngleSensitivity = 10f;
-        const float MouseVelocitySmoothTime = 0.05f;
-        const float DragSpringStrength = 100f;
-        const float DragDamping = 6f;
-
         void Awake()
         {
             _worldCamera = Camera.main;
@@ -99,19 +93,23 @@ namespace Gimersia.Gameplay
                 _horizontalMouseVelocity,
                 horizontalSpeed,
                 ref _horizontalMouseVelocitySmoothing,
-                MouseVelocitySmoothTime);
+                draggable.MouseVelocitySmoothTime);
 
             var targetAngle = Mathf.Clamp(
-                -_horizontalMouseVelocity * DragAngleSensitivity,
-                -MaximumDragAngle,
-                MaximumDragAngle);
-            var springAcceleration = (targetAngle - _dragAngle) * DragSpringStrength;
-            var dampingAcceleration = _dragAngularVelocity * DragDamping;
+                -_horizontalMouseVelocity * draggable.DragAngleSensitivity,
+                -draggable.MaximumDragAngle,
+                draggable.MaximumDragAngle);
+            var springAcceleration = (targetAngle - _dragAngle) * draggable.DragSpringStrength;
+            var dampingAcceleration = _dragAngularVelocity * draggable.DragDamping;
 
             _dragAngularVelocity += (springAcceleration - dampingAcceleration) * Time.deltaTime;
             _dragAngle += _dragAngularVelocity * Time.deltaTime;
-            _dragAngle = Mathf.Clamp(_dragAngle, -MaximumDragAngle, MaximumDragAngle);
-            _currentDraggedObject.transform.rotation = _currentDraggedObject.DefaultRotation * Quaternion.Euler(0f, 0f, _dragAngle);
+            _dragAngle = Mathf.Clamp(
+                _dragAngle,
+                -draggable.MaximumDragAngle,
+                draggable.MaximumDragAngle);
+            draggable.transform.rotation = draggable.DefaultRotation
+                * Quaternion.Euler(0f, 0f, _dragAngle);
 
             _currentDraggedObject.SetTopCenterPosition(mouseWorldPosition);
             _prevMousePos = mouseWorldPosition;
