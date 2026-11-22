@@ -185,7 +185,8 @@ namespace Gimersia.Gameplay
             EventBus.Raise(new EntityDropEvent(
                 draggedObject.GetComponent<Entity>(),
                 dropTarget?.GetComponent<Occupiable>(),
-                dropTarget.transform.position));
+                dropTarget != null ? dropTarget.transform.position : Vector3.zero,
+                accepted));
         }
 
         bool TryAcceptDrop(Draggable draggedObject, Droppable dropTarget)
@@ -250,12 +251,14 @@ namespace Gimersia.Gameplay
         public readonly Entity Entity;
         public readonly Occupiable Destination;
         public readonly Vector3 WorldPosition;
+        public readonly bool Accepted;
 
-        public EntityDropEvent(Entity entity, Occupiable destination, Vector3 worldPosition)
+        public EntityDropEvent(Entity entity, Occupiable destination, Vector3 worldPosition, bool accepted)
         {
             Entity = entity;
             Destination = destination;
             WorldPosition = worldPosition;
+            Accepted = accepted;
         }
     }
 }

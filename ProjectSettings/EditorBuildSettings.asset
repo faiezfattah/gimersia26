@@ -6,10 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_Project/Scene/_rana/_MainTest.unity
+    guid: ad2201c2dcaec89489935f64c04f1931
+  - enabled: 1
     path: Assets/_Project/Scene/_ZOO.unity
     guid: 0cb8904e82b0aa24ebff4b34764e5c94
   - enabled: 1
-    path: Assets/_Project/Scene/Splashscreen.unity
+    path: Assets/_Project/Scene/MainMenu.unity
     guid: cd00aaf765e4a054ebc8aabe1d5913fb
   - enabled: 1
     path: Assets/_Project/Scene/Main.unity
