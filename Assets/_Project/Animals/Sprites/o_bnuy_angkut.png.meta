@@ -1,0 +1,533 @@
+fileFormatVersion: 2
+guid: 52879f35c4bcb534690f84dc06b30408
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7657995167839998796
+    second: o_bnuy_angkut_0
+  - first:
+      213: -275641895637208627
+    second: o_bnuy_angkut_1
+  - first:
+      213: -8193615293923887216
+    second: o_bnuy_angkut_2
+  - first:
+      213: 1966077688134467053
+    second: o_bnuy_angkut_3
+  - first:
+      213: 3369953131626151484
+    second: o_bnuy_angkut_4
+  - first:
+      213: -3931817656789869929
+    second: o_bnuy_angkut_5
+  - first:
+      213: -2995380782272238132
+    second: o_bnuy_angkut_6
+  - first:
+      213: -415824317154961653
+    second: o_bnuy_angkut_7
+  - first:
+      213: -7061468959563766679
+    second: o_bnuy_angkut_8
+  - first:
+      213: -2450226632867750616
+    second: o_bnuy_angkut_9
+  - first:
+      213: -2717758095064057216
+    second: o_bnuy_angkut_10
+  - first:
+      213: 3234747647396764929
+    second: o_bnuy_angkut_11
+  - first:
+      213: 7897460970229329939
+    second: o_bnuy_angkut_12
+  - first:
+      213: 755988655869463267
+    second: o_bnuy_angkut_13
+  - first:
+      213: 7113349085076523797
+    second: o_bnuy_angkut_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 480
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: o_bnuy_angkut_0
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 177
+        width: 281
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c43d2c6080aa64a60800000000000000
+      internalID: 7657995167839998796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: o_bnuy_angkut_1
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 342
+        width: 35
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc134550829bc2cf0800000000000000
+      internalID: -275641895637208627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: o_bnuy_angkut_2
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 193
+        width: 34
+        height: 122
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09775734d4e6a4e80800000000000000
+      internalID: -8193615293923887216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: o_bnuy_angkut_3
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 312
+        width: 23
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ded731a9d39e84b10800000000000000
+      internalID: 1966077688134467053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: o_bnuy_angkut_4
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 159
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3eba48b48a74ce20800000000000000
+      internalID: 3369953131626151484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: o_bnuy_angkut_5
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 147
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79a5e6d3ca06f69c0800000000000000
+      internalID: -3931817656789869929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: o_bnuy_angkut_6
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 152
+        width: 27
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ccda1a97c054e66d0800000000000000
+      internalID: -2995380782272238132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: o_bnuy_angkut_7
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 143
+        width: 14
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0752079cf1ba3af0800000000000000
+      internalID: -415824317154961653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: o_bnuy_angkut_8
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 3
+        width: 204
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96421c0056f900e90800000000000000
+      internalID: -7061468959563766679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: o_bnuy_angkut_9
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 137
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82d57b8fbdb0ffdd0800000000000000
+      internalID: -2450226632867750616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: o_bnuy_angkut_10
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 76
+        width: 18
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08ab34e6965984ad0800000000000000
+      internalID: -2717758095064057216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: o_bnuy_angkut_11
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 44
+        width: 21
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10d5d1dc8d124ec20800000000000000
+      internalID: 3234747647396764929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: o_bnuy_angkut_12
+      rect:
+        serializedVersion: 2
+        x: 369
+        y: 52
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 310f70ee8ea699d60800000000000000
+      internalID: 7897460970229329939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: o_bnuy_angkut_13
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 58
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ea03575dafcd7a00800000000000000
+      internalID: 755988655869463267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: o_bnuy_angkut_14
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 30
+        width: 21
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51b06530e41b7b260800000000000000
+      internalID: 7113349085076523797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      o_bnuy_angkut_0: 7657995167839998796
+      o_bnuy_angkut_1: -275641895637208627
+      o_bnuy_angkut_10: -2717758095064057216
+      o_bnuy_angkut_11: 3234747647396764929
+      o_bnuy_angkut_12: 7897460970229329939
+      o_bnuy_angkut_13: 755988655869463267
+      o_bnuy_angkut_14: 7113349085076523797
+      o_bnuy_angkut_2: -8193615293923887216
+      o_bnuy_angkut_3: 1966077688134467053
+      o_bnuy_angkut_4: 3369953131626151484
+      o_bnuy_angkut_5: -3931817656789869929
+      o_bnuy_angkut_6: -2995380782272238132
+      o_bnuy_angkut_7: -415824317154961653
+      o_bnuy_angkut_8: -7061468959563766679
+      o_bnuy_angkut_9: -2450226632867750616
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
