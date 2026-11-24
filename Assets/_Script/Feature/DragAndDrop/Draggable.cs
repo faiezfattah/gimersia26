@@ -5,9 +5,12 @@ namespace Gimersia.Feature.DragAndDrop
     [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
     public class Draggable : MonoBehaviour
     {
-        SpriteRenderer _spriteRenderer;
+        Collider2D _collider;
         Vector3 _originalPosition;
         Quaternion _defaultRotation;
+
+        [Header("Drag Anchor")]
+        [SerializeField] Vector2 dragAnchorOffset;
 
         [Header("Drag Swing")]
         [Min(0f)] [SerializeField] float maximumDragAngle = 50f;
@@ -26,19 +29,25 @@ namespace Gimersia.Feature.DragAndDrop
 
         void Awake()
         {
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _collider = GetComponent<Collider2D>();
             _defaultRotation = transform.rotation;
         }
 
         public Vector3 GetTopCenterLocalPosition()
         {
-            var bounds = _spriteRenderer.sprite.bounds;
-            return new Vector3(bounds.center.x, bounds.max.y, 0f);
+            var spriteBounds = GetComponent<SpriteRenderer>().sprite.bounds;
+            var topCenter = new Vector2(spriteBounds.center.x, spriteBounds.max.y);
+            return new Vector3(
+                topCenter.x + dragAnchorOffset.x,
+                topCenter.y + dragAnchorOffset.y,
+                0f);
         }
 
         public void SetTopCenterPosition(Vector3 worldPosition)
         {
-            transform.position = worldPosition - transform.TransformVector(GetTopCenterLocalPosition());
+            var localAnchor = GetTopCenterLocalPosition();
+            var anchorWorldOffset = transform.TransformPoint(localAnchor) - transform.position;
+            transform.position = worldPosition - anchorWorldOffset;
         }
 
         public void BeginDrag()

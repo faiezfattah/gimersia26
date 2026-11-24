@@ -132,12 +132,12 @@ TextureImporter:
       name: otter_default_0
       rect:
         serializedVersion: 2
-        x: 78
-        y: 325
-        width: 9
-        height: 11
+        x: 80
+        y: 25
+        width: 335
+        height: 341
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -159,7 +159,7 @@ TextureImporter:
         width: 335
         height: 341
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -172,11 +172,33 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: otter_default_2
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 25
+        width: 335
+        height: 341
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b4d97f6ab6e8f24bb3bdeb50d32d634
+      internalID: -1239478627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 0e20f81e296fc914e9d33c55b0838213
     internalID: 0
     vertices: []
     indices: 
@@ -188,6 +210,7 @@ TextureImporter:
     nameFileIdTable:
       otter_default_0: -4755150470777157923
       otter_default_1: -4840062494541448247
+      otter_default_2: -1239478627
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

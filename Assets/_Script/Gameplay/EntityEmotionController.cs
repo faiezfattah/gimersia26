@@ -58,8 +58,17 @@ namespace Gimersia.Gameplay
 
         void Update()
         {
-            if (_draggable.IsDragging && !_wasDragging)
-                SetEmotion(PickupSprite);
+            if (_draggable.IsDragging)
+            {
+                if (_resetCoroutine != null)
+                {
+                    StopCoroutine(_resetCoroutine);
+                    _resetCoroutine = null;
+                }
+
+                if (!_wasDragging || _spriteRenderer.sprite != PickupSprite)
+                    SetEmotion(PickupSprite);
+            }
 
             _wasDragging = _draggable.IsDragging;
         }
