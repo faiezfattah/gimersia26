@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -3977244329090732851}
   - component: {fileID: 194581620101364446}
   - component: {fileID: -7231927235395984746}
+  - component: {fileID: 5563173250788299822}
   m_Layer: 0
   m_Name: _Entity
   m_TagString: Untagged
@@ -153,6 +154,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f488af9c2be73ad498a63fa8755b367e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.DragAndDrop.Draggable
+  maximumDragAngle: 50
+  dragAngleSensitivity: 10
+  mouseVelocitySmoothTime: 0.05
+  dragSpringStrength: 100
+  dragDamping: 6
 --- !u!114 &194581620101364446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,3 +188,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Gameplay.EntityData
   Icon: {fileID: 658167972, guid: 19bfeb7c07381634abd05b4d283570ac, type: 3}
   occupant: {fileID: 194581620101364446}
+--- !u!114 &5563173250788299822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2538286676646534793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64af35cb0ed5e6748a1e88007c95fbf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Gameplay.EntityEmotionController
+  NormalSprite: {fileID: 658167972, guid: 19bfeb7c07381634abd05b4d283570ac, type: 3}
+  PickupSprite: {fileID: 1479194493, guid: 19bfeb7c07381634abd05b4d283570ac, type: 3}
+  SatisfiedSprite: {fileID: 1568057011, guid: 19bfeb7c07381634abd05b4d283570ac, type: 3}
+  DissatisfiedSprite: {fileID: 128855201, guid: 19bfeb7c07381634abd05b4d283570ac, type: 3}
+  EmotionDuration: 1.5
