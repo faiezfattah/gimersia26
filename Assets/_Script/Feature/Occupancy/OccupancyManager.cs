@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Alchemy.Inspector;
 using Gimersia.Feature.Occupancy;
@@ -17,6 +18,16 @@ public class OccupancyManager
         return null;
     }
 
+    public List<OccupancyGrid> GetStageGrid()
+    {
+        var stageGrids = new List<OccupancyGrid>();
+        foreach (var grid in _grids)
+        {
+            if (grid.gridType == GridType.Stage) stageGrids.Add(grid);
+        }
+        return stageGrids;
+    }
+    
     public void AddGrid(OccupancyGrid grid)
     {
         if (!_grids.Contains(grid)) _grids.Add(grid);

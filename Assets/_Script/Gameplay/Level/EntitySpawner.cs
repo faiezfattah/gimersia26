@@ -10,7 +10,7 @@ namespace Gimersia.Gameplay
     {
         public void Spawn(OccupancyGrid grid, LevelData levelData)
         {
-            // get all occupiable tiles from the grid  
+            // get all occupiable tiles from the grid
             // spawn entities on them
             using (ListPool<Vector2Int>.Get(out var vacantTiles))
             {
@@ -20,7 +20,7 @@ namespace Gimersia.Gameplay
                     return;
                 }
 
-                foreach (var entityPrefab in levelData.entitiesPrefabs)
+                foreach (var entityPrefab in levelData.EntitiesPrefabs)
                 {
                     var entity = Instantiate(entityPrefab);
                     var occupiableTile = GetRandomVacantTile(vacantTiles);
@@ -28,7 +28,7 @@ namespace Gimersia.Gameplay
                     {
                         Debug.LogError($"Failed to get tile at position {occupiableTile}.");
                     }
-                    
+
                     if (!grid.TryOccupy(entity.GetComponent<Occupant>(), tile))
                     {
                         Debug.LogError($"Failed to occupy tile at position {occupiableTile} with entity {entity.name}.");

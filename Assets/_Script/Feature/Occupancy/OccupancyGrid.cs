@@ -60,8 +60,10 @@ namespace Gimersia.Feature.Occupancy
         /// <returns>return false if already occupied</returns>
         public bool TryOccupy(Occupant occupant, Vector2Int position)
         {
-            if (_occupants.ContainsKey(position))
+            if (_occupants.ContainsKey(position)){
+                Debug.LogError($"OccupancyGrid: {position} is already occupied");
                 return false;
+            }
 
             _occupants[position] = occupant;
             occupant.transform.SetParent(tilemap.transform, false);
@@ -71,11 +73,6 @@ namespace Gimersia.Feature.Occupancy
             occupant.Grid = this;
 
             return true;
-        }
-        public bool TryOccupy(Occupant occupant, Vector3 worldPosition)
-        {
-            var cell = tilemap.WorldToCell(worldPosition);
-            return TryOccupy(occupant, (Vector2Int)cell);
         }
         public bool TryOccupy(Occupant occupant, Occupiable occupiable)
         {
@@ -332,5 +329,15 @@ namespace Gimersia.Feature.Occupancy
                 occupiable.HideAllMarkers();
             }
         }
+        public void Dump()
+        {
+            var sb = new System.Text.StringBuilder();
+            foreach (var kvp in _occupancyGrid)
+            {
+                sb.AppendLine($"{kvp.Key} -> {kvp.Value}");
+            }
+            Debug.Log(sb.ToString());
+        }
+        public int TileCount => _occupancyGrid.Count;
     }
 }

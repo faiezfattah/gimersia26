@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Gimersia.Feature.Occupancy;
 using Gimersia.Feature.Screens;
 using Reflex.Attributes;
 using Reflex.Core;
@@ -20,6 +21,7 @@ namespace Gimersia.Gameplay
         int _currentLevelIndex = 0;
 
         CarAnimation _currentBus;
+        OccupancyGrid _overworld;
         EntitySpawner _spawner = new();
 
         public void Submit()
@@ -45,16 +47,24 @@ namespace Gimersia.Gameplay
         public void StartLevel()
         {
             var data = _levelDatas[_currentLevelIndex];
-            _spawner.Spawn(_judge.GetOverworldGrid(), data);
-            _currentBus = Instantiate(data.busPrefab);
-            _currentBus.AnimateIn();
+            
+            _overworld = Instantiate(data.OverworldPrefab);
+            GameObjectInjector.InjectRecursive(_overworld.gameObject, _diContainer);
+            _overworld.transform.position = Vector3.zero;
+            
+            _currentBus = Instantiate(data.BusPrefab);
             GameObjectInjector.InjectRecursive(_currentBus.gameObject, _diContainer);
+            _currentBus.AnimateIn();
+
+            _spawner.Spawn(_overworld, data);
         }
 
         public async UniTaskVoid NextLevel()
         {
             await _currentBus.AnimateOut();
             Destroy(_currentBus.gameObject);
+            Destroy(_overworld.gameObject);
+            
             _currentLevelIndex++;
             if (_currentLevelIndex < _levelDatas.Length)
             {

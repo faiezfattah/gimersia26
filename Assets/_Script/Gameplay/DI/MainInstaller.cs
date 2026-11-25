@@ -14,6 +14,7 @@ namespace Gimersia.Gameplay.DI {
         [SerializeField] DialogueSystem _dialogueSystem;
         [SerializeField] LevelData[] _levelDatas;
         [SerializeField] ScreenManager _screens;
+        [SerializeField] Camera _camera;
         public void InstallBindings(ContainerBuilder builder)
         {
             builder
@@ -21,6 +22,7 @@ namespace Gimersia.Gameplay.DI {
                 .RegisterValue(_dialogueSystem)
                 .RegisterValue(_levelDatas)
                 .RegisterValue(_screens)
+                .RegisterValue(_camera)
                 .RegisterType(typeof(LevelSystem), Lifetime.Singleton, Resolution.Eager)
                 .RegisterType(typeof(GameplayInteractionCoordinator), Lifetime.Singleton, Resolution.Eager)
                 .RegisterType(typeof(OccupancyManager), Lifetime.Singleton, Resolution.Eager)
