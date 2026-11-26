@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7853172b3359c314fa75a85bc5919a11, type: 3}
   m_Name: Level 2
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Gameplay.LevelData
-  BusPrefab: {fileID: 3021167631510196767, guid: aa8b0e282691d03498e4c0482652987b, type: 3}
+  BusPrefab: {fileID: 7730937658953940765, guid: 4d04c50a3ed01cd4796d98b5d75bab84, type: 3}
   OverworldPrefab: {fileID: 9183203786622036103, guid: 2caaafddbb6a75447a65fa21aed04999, type: 3}
   EntitiesPrefabs:
   - {fileID: -7231927235395984746, guid: e1e7491aca8071e46b5e6f2aa8946e6a, type: 3}
@@ -23,6 +23,3 @@ MonoBehaviour:
   - fah
   - /switch
   - fah2
-  - fah3
-  - fah3
-  - fah3

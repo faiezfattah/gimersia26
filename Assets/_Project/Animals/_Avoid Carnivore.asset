@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8260f8b3ea419cb4c8908e4ee5e67f69, type: 3}
   m_Name: _Avoid Carnivore
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.Occupancy.Rule
-  ErrorText: Scary carnivore
+  ErrorDialogue: Scary carnivore...
+  WantText: Avoid Carnivore
   Subject: 1
   Scope: 2
   Extent: 1

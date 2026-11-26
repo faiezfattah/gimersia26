@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Reflex.Attributes;
 using TMPro;
 using UnityEngine;
@@ -10,13 +11,11 @@ namespace Gimersia.Gameplay
         [Inject] LevelSystem _levelSystem;
         public Image ProfileIcon;
         public TextMeshProUGUI Traits;
-        public TextMeshProUGUI Rules;
+        public RectTransform RulesContainer;
+        public TextMeshProUGUI RulesItemPrefab;
 
         public Button SubmitButton;
-
-        // we have no visual but we need to test it. just out put it into the ui for now
-        public TextMeshProUGUI Log;
-
+        List<TextMeshProUGUI> _ruleTexts = new ();
         void Start()
         {
             _levelSystem.StartLevel();
@@ -33,9 +32,21 @@ namespace Gimersia.Gameplay
 
         public void UpdateCard(Entity data)
         {
+            foreach (var text in _ruleTexts)
+            {
+                Destroy(text.gameObject);
+            }
+            _ruleTexts.Clear();
+            
             ProfileIcon.sprite = data.Icon;
             Traits.text = data.occupant.Data.Traits.ToString();
-            Rules.text = string.Join("\n", data.occupant.Rules);
+
+            foreach (var rule in data.occupant.Rules)
+            {
+                var text = Instantiate(RulesItemPrefab, RulesContainer);
+                _ruleTexts.Add(text);
+                text.text = rule.WantText;
+            }
         }
 
         void UpdateLevel() // need level info

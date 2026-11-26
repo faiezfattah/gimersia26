@@ -1,12 +1,15 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Gimersia.Feature.Occupancy
 {
     [CreateAssetMenu(menuName = "Occupancy/Rule")]
     public class Rule : ScriptableObject
     {
-        public string ErrorText;
+        [FormerlySerializedAs("ErrorText")]
+        public string ErrorDialogue;
+        public string WantText;
         public Subject Subject;
         public Scope Scope;
         [Min(1)] public int Extent = 1;
@@ -34,7 +37,7 @@ namespace Gimersia.Feature.Occupancy
         Column
     }
 
-    public enum Polarity 
+    public enum Polarity
     {
         Avoid,
         Require

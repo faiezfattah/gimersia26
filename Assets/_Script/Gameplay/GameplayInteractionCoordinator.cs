@@ -28,7 +28,7 @@ namespace Gimersia.Gameplay
             if (_levelSystem.Judge()) return;
 
             foreach (var violation in _occupancyManager.GetViolations())
-                _dialogueSystem.ShowDialogue(violation.Occupant.transform, violation.Rule.ErrorText);
+                _dialogueSystem.ShowDialogue(violation.Occupant.transform, violation.Rule.ErrorDialogue);
         }
         public void OnDrag(Draggable draggable, Droppable droppable)
         {

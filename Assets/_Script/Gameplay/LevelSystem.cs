@@ -40,7 +40,7 @@ namespace Gimersia.Gameplay
             {
                 foreach (var violation in _judge.GetViolations())
                 {
-                    Debug.Log($"Violation: {violation.Rule.ErrorText} for {violation.Cell}");
+                    Debug.Log($"Violation: {violation.Rule.ErrorDialogue} for {violation.Cell}");
                 }
             }
             return !hasViolation;
