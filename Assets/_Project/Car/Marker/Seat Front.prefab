@@ -382,7 +382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ef650824221c445ad000b4047168e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.Occupancy.Occupiable
-  Traits: 0
+  Traits: 8
   AvailableMarker: {fileID: 4430786334217517898}
   ViolatedMarker: {fileID: 5758338543905433739}
   HintMarker: {fileID: 5202396260318829832}

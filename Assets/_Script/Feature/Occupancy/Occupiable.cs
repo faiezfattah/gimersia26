@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Gimersia.Feature.Occupancy
 {
+    [SelectionBase]
     public class Occupiable : MonoBehaviour
     {
         public TileTraitFlags Traits;
