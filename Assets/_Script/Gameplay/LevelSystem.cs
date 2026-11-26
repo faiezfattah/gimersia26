@@ -48,6 +48,7 @@ namespace Gimersia.Gameplay
         public async UniTask StartLevel()
         {
             var data = _levelDatas[_currentLevelIndex];
+            _hud.Hide();
             
             _overworld = Instantiate(data.OverworldPrefab);
             GameObjectInjector.InjectRecursive(_overworld.gameObject, _diContainer);
@@ -63,6 +64,7 @@ namespace Gimersia.Gameplay
 
             _cutscene.EndIntro();
             _hud.UpdateLevel(data);
+            _hud.Show();
         }
 
         public async UniTaskVoid NextLevel()

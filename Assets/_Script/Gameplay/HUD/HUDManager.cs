@@ -14,6 +14,7 @@ namespace Gimersia.Gameplay
     {
         [Inject] LevelSystem _levelSystem;
         [Inject] OccupancyManager _occupancy;
+        public CanvasGroup CanvasGroup;
         public Image ProfileIcon;
         public TextMeshProUGUI Traits;
         public RectTransform RulesContainer;
@@ -34,12 +35,25 @@ namespace Gimersia.Gameplay
                 {
                     bool wasStage = evt.OldGrid != null && evt.OldGrid.gridType == GridType.Stage;
                     bool isStage = evt.NewGrid != null && evt.NewGrid.gridType == GridType.Stage;
-                
+
                     if (!wasStage && isStage) ProgressBar.AddLevel();
                     else if (wasStage && !isStage) ProgressBar.RemoveLevel();
                 })
             };
         }
+        public void Show()
+        {
+            CanvasGroup.alpha = 1;
+            CanvasGroup.interactable = true;
+            CanvasGroup.blocksRaycasts = true;
+        }
+        public void Hide()
+        {
+            CanvasGroup.alpha = 0;
+            CanvasGroup.interactable = false;
+            CanvasGroup.blocksRaycasts = false;
+        }
+        
         void OnDestroy()
         {
             SubmitButton.onClick.RemoveListener(OnSubmit);
