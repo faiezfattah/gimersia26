@@ -9,7 +9,6 @@ namespace Gimersia.Feature.Occupancy
         public SpriteRenderer ViolatedMarker;
         public SpriteRenderer HintMarker;
         public OccupancyGrid Grid { get; private set; }
-        
         internal void Inject(OccupancyGrid grid)
         {
             Grid = grid;
@@ -29,10 +28,13 @@ namespace Gimersia.Feature.Occupancy
             HideAllMarkers();
             AvailableMarker.enabled = true;
         }
+        
         public void HideAvailableMarker()
         {
             AvailableMarker.enabled = false;
         }
+        
+        // display the rule scope and extent
         public void ShowHintMarker()
         {
             HideAllMarkers();
