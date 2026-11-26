@@ -456,7 +456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8baefd86f90b05441b656bf97d78b3e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSystem
-  yoffset: 50
+  yoffset: 100
   Canvas: {fileID: 6562641589692384743}
   DialogueBubble: {fileID: 9084276605960801177, guid: 5d44d759714df6f408c5c93c3e509191, type: 3}
 --- !u!1 &8527762503411073753

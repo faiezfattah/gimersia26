@@ -1856,6 +1856,7 @@ GameObject:
   - component: {fileID: 1527073219}
   - component: {fileID: 1527073218}
   - component: {fileID: 1527073217}
+  - component: {fileID: 1527073222}
   - component: {fileID: 1527073221}
   m_Layer: 5
   m_Name: HUD
@@ -1961,12 +1962,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5136159933ba4dc47b212eaaf7657285, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HUDManager
+  CanvasGroup: {fileID: 1527073222}
   ProfileIcon: {fileID: 1313223848}
   Traits: {fileID: 1823778200}
   RulesContainer: {fileID: 1780262147}
   RulesItemPrefab: {fileID: 5581465980093708309, guid: 63118adb9623a7f408af69989ff3c436, type: 3}
   SubmitButton: {fileID: 285211275}
   ProgressBar: {fileID: 179539097}
+--- !u!225 &1527073222
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527073216}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1738117130
 GameObject:
   m_ObjectHideFlags: 0
