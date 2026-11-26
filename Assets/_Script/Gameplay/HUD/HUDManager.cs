@@ -30,10 +30,14 @@ namespace Gimersia.Gameplay
             SubmitButton.onClick.AddListener(OnSubmit);
 
             _bag = new IDisposable[] {
-                EventBus<OccupantMovedEvent>.Bind(evt => {
-                    Debug.Log("OccupantMovedEvent");
-                    ProgressBar.SetLevel(CountOccupants());
-                }),
+                EventBus<OccupantMovedEvent>.Bind(evt =>
+                {
+                    bool wasStage = evt.OldGrid != null && evt.OldGrid.gridType == GridType.Stage;
+                    bool isStage = evt.NewGrid != null && evt.NewGrid.gridType == GridType.Stage;
+                
+                    if (!wasStage && isStage) ProgressBar.AddLevel();
+                    else if (wasStage && !isStage) ProgressBar.RemoveLevel();
+                })
             };
         }
         void OnDestroy()
@@ -68,21 +72,6 @@ namespace Gimersia.Gameplay
         public void UpdateLevel(LevelData data) // need level info
         {
             ProgressBar.SetTotalStep(data.TargetAnimalCount);
-        }
-        public int CountOccupants()
-        {
-            var stageGrids = _occupancy.GetStageGrid();
-            int count = 0;
-            using (ListPool<Occupant>.Get(out var occupants))
-            {
-                foreach (var grid in stageGrids)
-                {
-                    grid.GetOccupants(occupants);
-                }
-
-                count += occupants.Count;
-            }
-            return count;
         }
     }
 }
