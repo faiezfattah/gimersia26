@@ -1,5 +1,6 @@
 using System;
 using Gimersia.Core;
+using Gimersia.Feature.Blackbar;
 using Gimersia.Feature.Screens;
 using Reflex.Core;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace Gimersia.Gameplay.DI {
         [SerializeField] LevelData[] _levelDatas;
         [SerializeField] ScreenManager _screens;
         [SerializeField] Camera _camera;
+        [SerializeField] BlackbarManager _blackbar;
         public void InstallBindings(ContainerBuilder builder)
         {
             builder
@@ -23,12 +25,13 @@ namespace Gimersia.Gameplay.DI {
                 .RegisterValue(_levelDatas)
                 .RegisterValue(_screens)
                 .RegisterValue(_camera)
+                .RegisterValue(_blackbar)
                 .RegisterType(typeof(LevelSystem), Lifetime.Singleton, Resolution.Eager)
                 .RegisterType(typeof(GameplayInteractionCoordinator), Lifetime.Singleton, Resolution.Eager)
                 .RegisterType(typeof(OccupancyManager), Lifetime.Singleton, Resolution.Eager)
                 .RegisterType(typeof(InputMap), Lifetime.Singleton, Resolution.Eager)
                 .RegisterType(typeof(InputMapLifecycle), Lifetime.Singleton, Resolution.Eager)
-                .RegisterType(typeof(DialogueCommandCutscene), Lifetime.Singleton, Resolution.Lazy);
+                .RegisterType(typeof(CutsceneSystem), Lifetime.Singleton, Resolution.Lazy);
         }
     }
     class InputMapLifecycle : IDisposable {

@@ -17,7 +17,7 @@ namespace Gimersia.Gameplay
         [Inject] LevelData[] _levelDatas;
         [Inject] Container _diContainer;
         [Inject] ScreenManager _screens;
-        [Inject] DialogueCommandCutscene _dialogueCommandCutscene;
+        [Inject] CutsceneSystem _cutscene;
 
         int _currentLevelIndex = 0;
 
@@ -58,10 +58,9 @@ namespace Gimersia.Gameplay
 
             _spawner.Spawn(_overworld, data);
 
-            if (data.DialogueCommands.Length == 0) return;
-            _dialogueCommandCutscene.RunDialogueCommand(data.DialogueCommands).Forget();
-
-            await _currentBus.AnimateIn();
+            await _cutscene.PlayIntro(_currentBus, data.DialogueCommands);
+            await _cutscene.RunDialogueCommand(data.DialogueCommands);
+            _cutscene.EndIntro();
         }
 
         public async UniTaskVoid NextLevel()
