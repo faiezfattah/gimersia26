@@ -15,11 +15,12 @@ MonoBehaviour:
   BusPrefab: {fileID: 7730937658953940765, guid: 4d04c50a3ed01cd4796d98b5d75bab84, type: 3}
   OverworldPrefab: {fileID: 9183203786622036103, guid: 2caaafddbb6a75447a65fa21aed04999, type: 3}
   EntitiesPrefabs:
-  - {fileID: -7231927235395984746, guid: e1e7491aca8071e46b5e6f2aa8946e6a, type: 3}
-  - {fileID: -7231927235395984746, guid: e1e7491aca8071e46b5e6f2aa8946e6a, type: 3}
-  - {fileID: -7231927235395984746, guid: e1e7491aca8071e46b5e6f2aa8946e6a, type: 3}
-  - {fileID: -7231927235395984746, guid: e1e7491aca8071e46b5e6f2aa8946e6a, type: 3}
+  - {fileID: -7231927235395984746, guid: d32da4b805bef45469dd775df8ce1d54, type: 3}
+  - {fileID: -7231927235395984746, guid: c39ddc09ea756ef44bf519887e04dccd, type: 3}
+  - {fileID: -7231927235395984746, guid: cf441957e111c1142b9711f0124842ba, type: 3}
+  - {fileID: -7231927235395984746, guid: 867eb61e974faea49baf3eb023314db2, type: 3}
   DialogueCommands:
   - fah
   - /switch
   - fah2
+  TargetAnimalCount: 4

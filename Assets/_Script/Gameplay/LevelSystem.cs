@@ -18,7 +18,7 @@ namespace Gimersia.Gameplay
         [Inject] Container _diContainer;
         [Inject] ScreenManager _screens;
         [Inject] CutsceneSystem _cutscene;
-
+        [Inject] HUDManager _hud;
         int _currentLevelIndex = 0;
 
         CarAnimation _currentBus;
@@ -60,7 +60,9 @@ namespace Gimersia.Gameplay
 
             await _cutscene.PlayIntro(_currentBus, data.DialogueCommands);
             await _cutscene.RunDialogueCommand(data.DialogueCommands);
+
             _cutscene.EndIntro();
+            _hud.UpdateLevel(data);
         }
 
         public async UniTaskVoid NextLevel()

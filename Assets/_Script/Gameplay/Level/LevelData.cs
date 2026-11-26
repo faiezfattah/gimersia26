@@ -11,5 +11,6 @@ namespace Gimersia.Gameplay
         public OccupancyGrid OverworldPrefab;
         public List<Entity> EntitiesPrefabs;
         public string[] DialogueCommands;
+        public int TargetAnimalCount;
     }
 }

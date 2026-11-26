@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
+using Gimersia.Feature.Occupancy;
+using Oneiric.Core.EventBus;
 using Reflex.Attributes;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Pool;
 using UnityEngine.UI;
 
 namespace Gimersia.Gameplay
@@ -9,21 +13,33 @@ namespace Gimersia.Gameplay
     public class HUDManager : MonoBehaviour
     {
         [Inject] LevelSystem _levelSystem;
+        [Inject] OccupancyManager _occupancy;
         public Image ProfileIcon;
         public TextMeshProUGUI Traits;
         public RectTransform RulesContainer;
         public TextMeshProUGUI RulesItemPrefab;
-
         public Button SubmitButton;
+        public ProgressBar ProgressBar;
+        LevelData _currentData;
+        IDisposable[] _bag;
+        
         List<TextMeshProUGUI> _ruleTexts = new ();
         void Start()
         {
             _levelSystem.StartLevel();
             SubmitButton.onClick.AddListener(OnSubmit);
+
+            _bag = new IDisposable[] {
+                EventBus<OccupantMovedEvent>.Bind(evt => {
+                    Debug.Log("OccupantMovedEvent");
+                    ProgressBar.SetLevel(CountOccupants());
+                }),
+            };
         }
         void OnDestroy()
         {
             SubmitButton.onClick.RemoveListener(OnSubmit);
+            foreach (var item in _bag) item?.Dispose();
         }
         void OnSubmit()
         {
@@ -49,9 +65,24 @@ namespace Gimersia.Gameplay
             }
         }
 
-        void UpdateLevel() // need level info
+        public void UpdateLevel(LevelData data) // need level info
         {
+            ProgressBar.SetTotalStep(data.TargetAnimalCount);
+        }
+        public int CountOccupants()
+        {
+            var stageGrids = _occupancy.GetStageGrid();
+            int count = 0;
+            using (ListPool<Occupant>.Get(out var occupants))
+            {
+                foreach (var grid in stageGrids)
+                {
+                    grid.GetOccupants(occupants);
+                }
 
+                count += occupants.Count;
+            }
+            return count;
         }
     }
 }

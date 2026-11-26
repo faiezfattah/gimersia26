@@ -13,6 +13,7 @@ namespace Gimersia.Gameplay
         {
             _subs = new IDisposable[] {
                 EventBus<EntityDropEvent>.Bind(evt => {
+                    if (!evt.Accepted) return;
                     EntityDropVFX.Spawn(evt.WorldPosition);
                 })
             };

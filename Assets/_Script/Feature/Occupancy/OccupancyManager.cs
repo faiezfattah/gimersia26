@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Alchemy.Inspector;
 using Gimersia.Feature.Occupancy;
+using Oneiric.Core.EventBus;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -59,9 +60,11 @@ public class OccupancyManager
 
         if (!destinationGrid.IsVacant(destinationPosition))
         {
-            if (occupant.Grid == destinationGrid &&
-                occupant.Position == destinationPosition)
+            if (occupant.Grid == destinationGrid && occupant.Position == destinationPosition)
+            {
+                EventBus.Raise(new OccupantMovedEvent(occupant, null, destinationPosition, destinationGrid, destinationPosition));
                 return true;
+            }
             return false;
         }
 
@@ -75,11 +78,14 @@ public class OccupancyManager
         }
 
         if (destinationGrid.TryOccupy(occupant, destinationPosition))
+        {
+            EventBus.Raise(new OccupantMovedEvent(occupant, sourceGrid, sourcePosition.Value, destinationGrid, destinationPosition));
             return true;
+        }
 
         if (sourceGrid != null && sourcePosition.HasValue)
             sourceGrid.TryOccupy(occupant, sourcePosition.Value);
-
+            
         return false;
     }
 

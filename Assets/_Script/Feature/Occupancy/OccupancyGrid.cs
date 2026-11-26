@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Alchemy.Inspector;
+using Oneiric.Core.EventBus;
 using Reflex.Attributes;
 
 using UnityEngine;
@@ -72,6 +73,7 @@ namespace Gimersia.Feature.Occupancy
             occupant.Position = position;
             occupant.Grid = this;
 
+            EventBus.Raise(new OccupyEvent(this, occupant));
             return true;
         }
         public bool TryOccupy(Occupant occupant, Occupiable occupiable)
@@ -87,10 +89,11 @@ namespace Gimersia.Feature.Occupancy
 
             _occupants.Remove(pos);
             occupant.Position = null;
-            if (occupant.Grid == this)
-                occupant.Grid = null;
+            
+            if (occupant.Grid == this) occupant.Grid = null;
 
             Debug.Assert(_occupants.ContainsKey(pos) == false, $"Occupant {occupant.name} was not removed from the grid {name}.");
+            EventBus.Raise(new UnoccupyEvent(this, occupant));
             return true;
         }
         public bool IsVacant(Vector2Int position)

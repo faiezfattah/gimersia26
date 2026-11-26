@@ -19,3 +19,4 @@ MonoBehaviour:
   - {fileID: -7231927235395984746, guid: d32da4b805bef45469dd775df8ce1d54, type: 3}
   DialogueCommands:
   - fah
+  TargetAnimalCount: 2
