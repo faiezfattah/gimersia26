@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8260f8b3ea419cb4c8908e4ee5e67f69, type: 3}
-  m_Name: _Avoid Carnivore
+  m_Name: Near Other Big
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.Occupancy.Rule
-  ErrorDialogue: Scary carnivore...
-  WantText: Avoid Carnivore
+  ErrorDialogue: I'm unprotected
+  WantText: Want to be near big animal
   Subject: 1
-  Scope: 2
+  Scope: 1
   Extent: 1
-  Polarity: 0
-  TargetEntity: 4
-  TargetTile: 0
+  Polarity: 1
+  TargetEntity: 512
+  TargetTile: 2

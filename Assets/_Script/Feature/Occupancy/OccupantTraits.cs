@@ -13,6 +13,10 @@ namespace Gimersia.Feature.Occupancy
 
         Hungry = 1 << 5,
         Thirsty = 1 << 6,
+
+        Small = 1 << 7,
+        Medium = 1 << 8,
+        Large = 1 << 9,
     }
 
 }
