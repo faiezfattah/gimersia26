@@ -19,3 +19,10 @@ MonoBehaviour:
   - {fileID: -7231927235395984746, guid: e1e7491aca8071e46b5e6f2aa8946e6a, type: 3}
   - {fileID: -7231927235395984746, guid: e1e7491aca8071e46b5e6f2aa8946e6a, type: 3}
   - {fileID: -7231927235395984746, guid: e1e7491aca8071e46b5e6f2aa8946e6a, type: 3}
+  DialogueCommands:
+  - fah
+  - /switch
+  - fah2
+  - fah3
+  - fah3
+  - fah3

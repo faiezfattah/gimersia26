@@ -315,6 +315,13 @@ namespace Gimersia.Feature.Occupancy
                 }
             }
         }
+        public void GetOccupants(List<Occupant> into)
+        {
+            foreach (var occupant in _occupants.Values)
+            {
+                into.Add(occupant);
+            }
+        }
         public void HideHintTiles()
         {
             foreach (var occupiable in _occupancyGrid.Keys)

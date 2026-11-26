@@ -13,20 +13,22 @@ namespace Gimersia.Gameplay {
         public float duration = 1f;
 
         [Button]
-        public void AnimateIn()
+        public UniTask AnimateIn()
         {
-            LMotion
+            return LMotion
                 .Create(FromY, 0f, duration)
                 .WithEase(EaseIn)
-                .BindToPositionY(transform);
+                .BindToPositionY(transform)
+                .ToUniTask();
         }
         [Button]
-        public UniTask AnimateOut() {
+        public UniTask AnimateOut()
+        {
             return LMotion
                 .Create(0f, ToY, duration)
                 .WithEase(EaseOut)
                 .BindToPositionY(transform)
-                .ToUniTask(); ;
+                .ToUniTask();
         }
     }
 }

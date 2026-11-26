@@ -27,7 +27,8 @@ namespace Gimersia.Gameplay.DI {
                 .RegisterType(typeof(GameplayInteractionCoordinator), Lifetime.Singleton, Resolution.Eager)
                 .RegisterType(typeof(OccupancyManager), Lifetime.Singleton, Resolution.Eager)
                 .RegisterType(typeof(InputMap), Lifetime.Singleton, Resolution.Eager)
-                .RegisterType(typeof(InputMapLifecycle), Lifetime.Singleton, Resolution.Eager);
+                .RegisterType(typeof(InputMapLifecycle), Lifetime.Singleton, Resolution.Eager)
+                .RegisterType(typeof(DialogueCommandCutscene), Lifetime.Singleton, Resolution.Lazy);
         }
     }
     class InputMapLifecycle : IDisposable {

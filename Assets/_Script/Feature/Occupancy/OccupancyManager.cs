@@ -27,6 +27,13 @@ public class OccupancyManager
         }
         return stageGrids;
     }
+    public void GetOccupants(List<Occupant> into)
+    {
+        foreach (var grid in _grids)
+        {
+            grid.GetOccupants(into);
+        }
+    }
     
     public void AddGrid(OccupancyGrid grid)
     {

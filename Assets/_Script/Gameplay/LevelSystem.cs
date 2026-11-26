@@ -17,6 +17,7 @@ namespace Gimersia.Gameplay
         [Inject] LevelData[] _levelDatas;
         [Inject] Container _diContainer;
         [Inject] ScreenManager _screens;
+        [Inject] DialogueCommandCutscene _dialogueCommandCutscene;
 
         int _currentLevelIndex = 0;
 
@@ -44,7 +45,7 @@ namespace Gimersia.Gameplay
             }
             return !hasViolation;
         }
-        public void StartLevel()
+        public async UniTask StartLevel()
         {
             var data = _levelDatas[_currentLevelIndex];
             
@@ -54,9 +55,13 @@ namespace Gimersia.Gameplay
             
             _currentBus = Instantiate(data.BusPrefab);
             GameObjectInjector.InjectRecursive(_currentBus.gameObject, _diContainer);
-            _currentBus.AnimateIn();
 
             _spawner.Spawn(_overworld, data);
+
+            if (data.DialogueCommands.Length == 0) return;
+            _dialogueCommandCutscene.RunDialogueCommand(data.DialogueCommands).Forget();
+
+            await _currentBus.AnimateIn();
         }
 
         public async UniTaskVoid NextLevel()

@@ -10,5 +10,6 @@ namespace Gimersia.Gameplay
         public CarAnimation BusPrefab;
         public OccupancyGrid OverworldPrefab;
         public List<Entity> EntitiesPrefabs;
+        public string[] DialogueCommands;
     }
 }
