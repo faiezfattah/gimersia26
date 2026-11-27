@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Gimersia.Feature.Occupancy;
+using LitMotion;
+using LitMotion.Extensions;
 using Oneiric.Core.EventBus;
 using Reflex.Attributes;
 using TMPro;
@@ -15,6 +17,7 @@ namespace Gimersia.Gameplay
         [Inject] LevelSystem _levelSystem;
         [Inject] OccupancyManager _occupancy;
         public CanvasGroup CanvasGroup;
+        public RectTransform CardRect;
         public Image ProfileIcon;
         public TextMeshProUGUI Traits;
         public RectTransform RulesContainer;
@@ -28,6 +31,7 @@ namespace Gimersia.Gameplay
         void Start()
         {
             _levelSystem.StartLevel();
+            HideCard();
             SubmitButton.onClick.AddListener(OnSubmit);
 
             _bag = new IDisposable[] {
@@ -71,8 +75,9 @@ namespace Gimersia.Gameplay
                 Destroy(text.gameObject);
             }
             _ruleTexts.Clear();
-            
+
             ProfileIcon.sprite = data.Icon;
+            ProfileIcon.color = new Color(1, 1, 1, 1);
             Traits.text = string.Join("\n", data.occupant.Traits.ToString().Split(','));
 
             foreach (var rule in data.occupant.Rules)
@@ -81,9 +86,31 @@ namespace Gimersia.Gameplay
                 _ruleTexts.Add(text);
                 text.text = rule.WantText;
             }
+            
+            LMotion
+                .Create(-100f, 100f, 0.3f)
+                .WithEase(Ease.OutBack)
+                .BindToAnchoredPosition3DY(CardRect);
         }
+        public void HideCard()
+        {
+            LMotion
+                .Create(100f, -100f, 0.3f)
+                .WithEase(Ease.OutCubic)
+                .BindToAnchoredPosition3DY(CardRect);
 
-        public void UpdateLevel(LevelData data) // need level info
+            ProfileIcon.sprite = null;
+            ProfileIcon.color = new Color(1, 1, 1, 0);
+            Traits.text = "";
+
+            foreach (var text in _ruleTexts)
+            {
+                Destroy(text.gameObject);
+            }
+            
+            _ruleTexts.Clear();
+        }
+        public void UpdateLevel(LevelData data)
         {
             ProgressBar.SetTotalStep(data.TargetAnimalCount);
         }

@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 356619361045661267, guid: 97bf4109321998448b50262d76d42f54, type: 3}
       propertyPath: Offset.x
-      value: 0
+      value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: 356619361045661267, guid: 97bf4109321998448b50262d76d42f54, type: 3}
       propertyPath: Offset.y
-      value: 0.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6413247826223017456, guid: 97bf4109321998448b50262d76d42f54, type: 3}
       propertyPath: m_LocalScale.x

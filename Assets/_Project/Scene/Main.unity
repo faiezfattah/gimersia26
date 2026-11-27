@@ -1066,6 +1066,18 @@ PrefabInstance:
       propertyPath: _levelDatas.Array.size
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: -6125319622232116533, guid: c6b452c4a462bff48a7650f1d459c7c4, type: 3}
+      propertyPath: '_levelDatas.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: e30b5585049270940916aa0cb5e828b2, type: 2}
+    - target: {fileID: -6125319622232116533, guid: c6b452c4a462bff48a7650f1d459c7c4, type: 3}
+      propertyPath: '_levelDatas.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 0ea1cd8407cce7b42881433b1eaaa0e6, type: 2}
+    - target: {fileID: -6125319622232116533, guid: c6b452c4a462bff48a7650f1d459c7c4, type: 3}
+      propertyPath: '_levelDatas.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: e94029f4258a6514faf4d7caf720e181, type: 2}
     - target: {fileID: 158242236969996745, guid: c6b452c4a462bff48a7650f1d459c7c4, type: 3}
       propertyPath: m_Name
       value: MainSceneScope
@@ -1510,7 +1522,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 429.54175, y: 113.92529}
+  m_AnchoredPosition: {x: 429.54175, y: 100}
   m_SizeDelta: {x: 335.5457, y: 259.3023}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1065103337
@@ -1967,6 +1979,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HUDManager
   CanvasGroup: {fileID: 1527073222}
+  CardRect: {fileID: 1065103336}
   ProfileIcon: {fileID: 1313223848}
   Traits: {fileID: 1823778200}
   RulesContainer: {fileID: 1780262147}

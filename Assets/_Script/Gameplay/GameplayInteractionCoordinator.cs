@@ -17,7 +17,6 @@ namespace Gimersia.Gameplay
         public void OnPickUp(Entity entity)
         {
             _dialogueSystem.HideDialogue(entity.occupant.transform);
-            _hud.UpdateCard(entity);
             _occupancyManager.ShowDroppableTiles();
         }
 
@@ -65,6 +64,8 @@ namespace Gimersia.Gameplay
                 return;
             }
 
+            _hud.UpdateCard(entity);
+
             using (ListPool<Violation>.Get(out var violations))
             {
                 if (!_occupancyManager.GetViolationsFor(entity.occupant, violations))
@@ -75,6 +76,7 @@ namespace Gimersia.Gameplay
         }
         public void OnHoverExit(Draggable draggable)
         {
+            _hud.HideCard();
             _occupancyManager.HideAllTileMarkers();
         }
         public bool TryDropEntity(Entity entity, Occupiable destination)
