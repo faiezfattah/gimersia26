@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Alchemy.Inspector;
 using Gimersia.Feature.Occupancy;
 using LitMotion;
 using LitMotion.Extensions;
@@ -17,16 +18,19 @@ namespace Gimersia.Gameplay
         [Inject] LevelSystem _levelSystem;
         [Inject] OccupancyManager _occupancy;
         public CanvasGroup CanvasGroup;
+        [Title("Info Card")]
         public RectTransform CardRect;
         public Image ProfileIcon;
+        public TextMeshProUGUI ProfileName;
         public TextMeshProUGUI Traits;
         public RectTransform RulesContainer;
         public TextMeshProUGUI RulesItemPrefab;
+        [Title("Others")]
         public Button SubmitButton;
         public ProgressBar ProgressBar;
         LevelData _currentData;
         IDisposable[] _bag;
-        
+
         List<TextMeshProUGUI> _ruleTexts = new ();
         void Start()
         {
@@ -57,7 +61,7 @@ namespace Gimersia.Gameplay
             CanvasGroup.interactable = false;
             CanvasGroup.blocksRaycasts = false;
         }
-        
+
         void OnDestroy()
         {
             SubmitButton.onClick.RemoveListener(OnSubmit);
@@ -68,7 +72,7 @@ namespace Gimersia.Gameplay
             _levelSystem.Submit();
         }
 
-        public void UpdateCard(Entity data)
+        public void UpdateCard(Entity entity)
         {
             foreach (var text in _ruleTexts)
             {
@@ -76,17 +80,18 @@ namespace Gimersia.Gameplay
             }
             _ruleTexts.Clear();
 
-            ProfileIcon.sprite = data.Icon;
+            ProfileIcon.sprite = entity.Icon;
             ProfileIcon.color = new Color(1, 1, 1, 1);
-            Traits.text = string.Join("\n", data.occupant.Traits.ToString().Split(','));
+            Traits.text = string.Join("\n", entity.occupant.Traits.ToString().Split(','));
+            ProfileName.text = entity.name;
 
-            foreach (var rule in data.occupant.Rules)
+            foreach (var rule in entity.occupant.Rules)
             {
                 var text = Instantiate(RulesItemPrefab, RulesContainer);
                 _ruleTexts.Add(text);
                 text.text = rule.WantText;
             }
-            
+
             LMotion
                 .Create(-100f, 100f, 0.3f)
                 .WithEase(Ease.OutBack)
@@ -107,7 +112,7 @@ namespace Gimersia.Gameplay
             {
                 Destroy(text.gameObject);
             }
-            
+
             _ruleTexts.Clear();
         }
         public void UpdateLevel(LevelData data)
