@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Gimersia.Feature.Occupancy;
 using UnityEngine;
@@ -9,8 +10,16 @@ namespace Gimersia.Gameplay
     {
         public CarAnimation BusPrefab;
         public OccupancyGrid OverworldPrefab;
-        public List<Entity> EntitiesPrefabs;
+        public List<EntitySpawnEntry> EntitiesPrefabs;
         public string[] DialogueCommands;
         public int TargetAnimalCount;
+    }
+
+    [Serializable]
+    public struct EntitySpawnEntry
+    {
+        public string Id;
+        public Entity EntityPrefab;
+        public Rule[] AddedRules;
     }
 }

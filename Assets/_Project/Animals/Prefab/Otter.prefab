@@ -172,7 +172,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b42979dfb54cffd4fbe4d73e7e40ddd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.Occupancy.Occupant
-  Data: {fileID: 11400000, guid: 06c5a027eb943d743be72b6e58396ed7, type: 2}
+  Width: 1
+  Height: 1
+  Traits: 260
   Rules: []
 --- !u!114 &-7231927235395984746
 MonoBehaviour:

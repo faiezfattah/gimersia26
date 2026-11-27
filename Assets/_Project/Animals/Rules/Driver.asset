@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8260f8b3ea419cb4c8908e4ee5e67f69, type: 3}
   m_Name: Driver
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.Occupancy.Rule
-  ErrorDialogue: I want be near the windows..
-  WantText: Want to see the views
-  Subject: 0
-  Scope: 1
+  ErrorDialogue: I want to drive...
+  WantText: I want to drive!
+  Subject: 2
+  Scope: 0
   Extent: 1
   Polarity: 1
   TargetEntity: 0
-  TargetTile: 32
+  TargetTile: 64

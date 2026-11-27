@@ -15,8 +15,14 @@ MonoBehaviour:
   BusPrefab: {fileID: 3021167631510196767, guid: aa8b0e282691d03498e4c0482652987b, type: 3}
   OverworldPrefab: {fileID: 2785328834418452610, guid: 4f82655dd049221478c9f49b6282a332, type: 3}
   EntitiesPrefabs:
-  - {fileID: -7231927235395984746, guid: d32da4b805bef45469dd775df8ce1d54, type: 3}
-  - {fileID: -7231927235395984746, guid: d32da4b805bef45469dd775df8ce1d54, type: 3}
+  - Id: 
+    EntityPrefab: {fileID: -7231927235395984746, guid: d32da4b805bef45469dd775df8ce1d54, type: 3}
+    AddedRules:
+    - {fileID: 11400000, guid: 37bb91bafc574e245bbe1a350e6850b2, type: 2}
+  - Id: 
+    EntityPrefab: {fileID: -7231927235395984746, guid: c39ddc09ea756ef44bf519887e04dccd, type: 3}
+    AddedRules:
+    - {fileID: 11400000, guid: b26b105ffa9e4504784405d5521d0785, type: 2}
   DialogueCommands:
   - fah
   TargetAnimalCount: 2

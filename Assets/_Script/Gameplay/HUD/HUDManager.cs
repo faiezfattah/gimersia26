@@ -73,7 +73,7 @@ namespace Gimersia.Gameplay
             _ruleTexts.Clear();
             
             ProfileIcon.sprite = data.Icon;
-            Traits.text = data.occupant.Data.Traits.ToString();
+            Traits.text = string.Join("\n", data.occupant.Traits.ToString().Split(','));
 
             foreach (var rule in data.occupant.Rules)
             {

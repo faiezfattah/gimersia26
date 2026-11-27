@@ -166,26 +166,33 @@ namespace Gimersia.Feature.Occupancy
             foreach (var rule in occupant.Rules)
             {
                 var offenders = new List<Vector2Int>();
+                var ruleFulfilled = false;
 
                 foreach (var scopedCell in GetCellInScope(cell, rule.Scope, rule.Extent))
                 {
-                    var (entity, tile) = ResolveSubjectFlags(
-                        rule.Subject,
-                        scopedCell,
-                        simulatedOccupant,
-                        cell);
+                    var (entity, tile) = ResolveSubjectFlags(rule.Subject, scopedCell, simulatedOccupant, cell);
 
-                    switch (rule.Polarity, entity & rule.TargetEntity, tile & rule.TargetTile)
+                    var entityMatch = (entity & rule.TargetEntity) != 0;
+                    var tileMatch = (tile & rule.TargetTile) != 0;
+                    var anyMatch = entityMatch || tileMatch;
+
+                    switch (rule.Polarity, anyMatch)
                     {
-                        case (Polarity.Require, 0, 0):
-                        case (Polarity.Avoid, not 0, _):
-                        case (Polarity.Avoid, _, not 0):
+                        case (Polarity.Require, false):
+                            offenders.Add(scopedCell);
+                            break;
+                        case (Polarity.Require, true):
+                            offenders.Clear();
+                            ruleFulfilled = true;
+                            break;
+                        case (Polarity.Avoid, true):
                             offenders.Add(scopedCell);
                             break;
                         default:
                             break;
                     }
                 }
+                if (ruleFulfilled) break;
 
                 if (offenders.Count > 0)
                 {
@@ -209,12 +216,12 @@ namespace Gimersia.Feature.Occupancy
             {
                 if (simulatedOccupant != null && cell == simulatedPosition)
                 {
-                    entity = simulatedOccupant.Data.Traits;
+                    entity = simulatedOccupant.Traits;
                 }
                 else if (_occupants.TryGetValue(cell, out var occupant))
                 {
                     if (simulatedOccupant == null || occupant != simulatedOccupant)
-                        entity = occupant.Data.Traits;
+                        entity = occupant.Traits;
                 }
             }
             if ((subject & Subject.Tile) != 0 && _occupancyGrid.TryGetValue(cell, out var t))
@@ -292,7 +299,9 @@ namespace Gimersia.Feature.Occupancy
             {
                 foreach (var offender in v.Offenders)
                 {
-                    _occupancyGrid[offender].ShowViolatedMarker();
+                    if (!_occupancyGrid.TryGetValue(offender, out var occupiable))
+                        continue;
+                    occupiable.ShowViolatedMarker();
                     Debug.Log($"Violation at {v.Cell} for occupant {v.Occupant.name} due to rule {v.Rule}");         
                 }
             }

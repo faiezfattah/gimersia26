@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.Occupancy.Rule
   ErrorDialogue: I want be near the windows..
   WantText: Want to see the views
-  Subject: 0
-  Scope: 1
+  Subject: 2
+  Scope: 0
   Extent: 1
   Polarity: 1
   TargetEntity: 0

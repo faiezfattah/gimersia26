@@ -20,16 +20,23 @@ namespace Gimersia.Gameplay
                     return;
                 }
 
-                foreach (var entityPrefab in levelData.EntitiesPrefabs)
+                foreach (var entry in levelData.EntitiesPrefabs)
                 {
-                    var entity = Instantiate(entityPrefab);
+                    var entity = Instantiate(entry.EntityPrefab);
+                    if (!string.IsNullOrEmpty(entry.Id)) entity.name = entry.Id;
+
+                    if (entry.AddedRules != null && entry.AddedRules.Length > 0)
+                    {
+                        entity.occupant.Rules.AddRange(entry.AddedRules);
+                    }
+
                     var occupiableTile = GetRandomVacantTile(vacantTiles);
                     if (!grid.TryGetTileAt(occupiableTile, out var tile))
                     {
                         Debug.LogError($"Failed to get tile at position {occupiableTile}.");
                     }
 
-                    if (!grid.TryOccupy(entity.GetComponent<Occupant>(), tile))
+                    if (!grid.TryOccupy(entity.occupant, tile))
                     {
                         Debug.LogError($"Failed to occupy tile at position {occupiableTile} with entity {entity.name}.");
                     }

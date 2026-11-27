@@ -15,8 +15,8 @@ MonoBehaviour:
   ErrorDialogue: Scary...
   WantText: Dont like big animals
   Subject: -1
-  Scope: 2
+  Scope: 1
   Extent: 1
   Polarity: 0
-  TargetEntity: 0
+  TargetEntity: 512
   TargetTile: 0
