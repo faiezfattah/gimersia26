@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.Occupancy.Rule
   ErrorDialogue: Mediums animal need to stick together!
   WantText: Want to be near other medium sized animal
-  Subject: -1
+  Subject: 1
   Scope: 2
   Extent: 1
   Polarity: 1
