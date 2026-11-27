@@ -1,8 +1,9 @@
-Shader "Custom/SpriteProceduralDiamondBG"
+Shader "Custom/DiamondPattern"
 {
     Properties
     {
         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
+        _MaskTex ("Mask", 2D) = "white" {}
         _BgColor ("Background Color", Color) = (0.62, 0.88, 0.76, 1)
         _ColorA ("Diamond Color A", Color) = (0.75, 0.95, 0.85, 1)
         _ColorB ("Diamond Color B", Color) = (0.52, 0.80, 0.68, 1)
@@ -17,45 +18,59 @@ Shader "Custom/SpriteProceduralDiamondBG"
     {
         Tags
         {
-            "Queue"="Transparent"
-            "IgnoreProjector"="True"
-            "RenderType"="Transparent"
-            "PreviewType"="Plane"
-            "CanUseSpriteAtlas"="True"
+            "Queue" = "Transparent"
+            "RenderType" = "Transparent"
+            "RenderPipeline" = "UniversalPipeline"
         }
 
-        Cull Off
-        Lighting Off
-        ZWrite Off
         Blend SrcAlpha OneMinusSrcAlpha
+        Cull Off
+        ZWrite Off
 
         Pass
         {
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-            #include "UnityCG.cginc"
+            Tags { "LightMode" = "Universal2D" }
 
-            struct appdata
+            HLSLPROGRAM
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/Core2D.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/SurfaceData2D.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/InputData2D.hlsl"
+
+            #pragma vertex CombinedShapeLightVertex
+            #pragma fragment CombinedShapeLightFragment
+            #pragma multi_compile USE_SHAPE_LIGHT_TYPE_0 __
+            #pragma multi_compile USE_SHAPE_LIGHT_TYPE_1 __
+            #pragma multi_compile USE_SHAPE_LIGHT_TYPE_2 __
+            #pragma multi_compile USE_SHAPE_LIGHT_TYPE_3 __
+
+            struct Attributes
             {
-                float4 vertex   : POSITION;
-                float4 color    : COLOR;
-                float2 texcoord : TEXCOORD0;
+                float3 positionOS : POSITION;
+                float4 color      : COLOR;
+                float2 uv         : TEXCOORD0;
             };
 
-            struct v2f
+            struct Varyings
             {
-                float4 pos      : SV_POSITION;
-                fixed4 color    : COLOR;
-                float2 uv       : TEXCOORD0;
-                float2 worldPos : TEXCOORD1;
+                float4 positionCS : SV_POSITION;
+                half4  color      : COLOR;
+                float2 uv         : TEXCOORD0;
+                half2  lightingUV : TEXCOORD1;
+                float2 worldPos   : TEXCOORD2;
             };
 
-            sampler2D _MainTex;
-            fixed4 _BgColor, _ColorA, _ColorB;
-            float _TileSize, _OuterSize, _InnerSize, _MinAlpha, _MaxAlpha;
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
+            TEXTURE2D(_MaskTex);
+            SAMPLER(sampler_MaskTex);
 
-            // Sin-free hash: avoids precision banding on mobile WebGL GPUs
+            CBUFFER_START(UnityPerMaterial)
+                half4 _BgColor, _ColorA, _ColorB;
+                float _TileSize, _OuterSize, _InnerSize, _MinAlpha, _MaxAlpha;
+            CBUFFER_END
+
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/CombinedShapeLightShared.hlsl"
+
             float hash21(float2 p)
             {
                 p = frac(p * float2(123.34, 456.21));
@@ -63,51 +78,51 @@ Shader "Custom/SpriteProceduralDiamondBG"
                 return frac(p.x * p.y);
             }
 
-            v2f vert(appdata v)
+            Varyings CombinedShapeLightVertex(Attributes v)
             {
-                v2f o;
-                o.pos = UnityObjectToClipPos(v.vertex);
-                o.uv = v.texcoord;
+                Varyings o = (Varyings)0;
+                o.positionCS = TransformObjectToHClip(v.positionOS);
+                o.worldPos = TransformObjectToWorld(v.positionOS).xy;
+                o.uv = v.uv;
+                o.lightingUV = half2(ComputeScreenPos(o.positionCS / o.positionCS.w).xy);
                 o.color = v.color;
-                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xy;
                 return o;
             }
 
-            fixed4 frag(v2f i) : SV_Target
+            half4 CombinedShapeLightFragment(Varyings i) : SV_Target
             {
-                // Sample _MainTex so SpriteRenderer alpha/masking works properly
-                fixed texAlpha = tex2D(_MainTex, i.uv).a;
+                half texAlpha = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv).a;
+                half4 mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
 
-                // 1. Scale world coordinates to tile size
+                // Procedural diamond pattern
                 float2 uv = i.worldPos / max(_TileSize, 0.01);
-
-                // 2. Rotate 45 degrees (cos 45 = sin 45 = 0.70710678)
                 float2 rotUV = float2(uv.x - uv.y, uv.x + uv.y) * 0.70710678;
 
-                // 3. Split into unique cell ID and local [-0.5, 0.5] coords
                 float2 id = floor(rotUV);
                 float2 local = frac(rotUV) - 0.5;
 
-                // 4. Hollow square SDF with screen-space anti-aliasing
                 float d = max(abs(local.x), abs(local.y));
                 float aa = fwidth(d);
                 float outer = 1.0 - smoothstep(_OuterSize - aa, _OuterSize + aa, d);
                 float inner = smoothstep(_InnerSize - aa, _InnerSize + aa, d);
                 float shape = outer * inner;
 
-                // 5. Randomize color and opacity per diamond
                 float rndColor = hash21(id);
                 float rndAlpha = hash21(id + 19.37);
 
-                fixed3 diamondCol = lerp(_ColorA.rgb, _ColorB.rgb, rndColor);
-                float alpha = lerp(_MinAlpha, _MaxAlpha, rndAlpha);
+                half3 diamondCol = lerp(_ColorA.rgb, _ColorB.rgb, rndColor);
+                half alpha = lerp(_MinAlpha, _MaxAlpha, rndAlpha);
+                half3 finalCol = lerp(_BgColor.rgb, diamondCol, shape * alpha) * i.color.rgb;
 
-                fixed3 finalCol = lerp(_BgColor.rgb, diamondCol, shape * alpha);
+                // Feed into URP 2D lighting & shadows
+                SurfaceData2D surfaceData;
+                InputData2D inputData;
+                InitializeSurfaceData(finalCol, texAlpha * i.color.a, mask, surfaceData);
+                InitializeInputData(i.uv, i.lightingUV, inputData);
 
-                // Multiply by SpriteRenderer tint/alpha and texture alpha
-                return fixed4(finalCol * i.color.rgb, texAlpha * i.color.a);
+                return CombinedShapeLightShared(surfaceData, inputData);
             }
-            ENDCG
+            ENDHLSL
         }
     }
 }

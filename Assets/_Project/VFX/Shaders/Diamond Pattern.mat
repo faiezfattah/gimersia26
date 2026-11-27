@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Diamond Patterns
+  m_Name: Diamond Pattern
   m_Shader: {fileID: 4800000, guid: c302d4b34da6abc40b93e0349c249632, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
