@@ -102,6 +102,15 @@ namespace Gimersia.Core
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mouse Input"",
+                    ""type"": ""Button"",
+                    ""id"": ""45974f4f-c5e7-47ef-ba29-a132d0400298"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -113,6 +122,17 @@ namespace Gimersia.Core
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b71db9ee-6db6-480a-9a24-a874d70a534b"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Mouse Input"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -701,6 +721,7 @@ namespace Gimersia.Core
             // Main
             m_Main = asset.FindActionMap("Main", throwIfNotFound: true);
             m_Main_Pause = m_Main.FindAction("Pause", throwIfNotFound: true);
+            m_Main_MouseInput = m_Main.FindAction("Mouse Input", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -795,6 +816,7 @@ namespace Gimersia.Core
         private readonly InputActionMap m_Main;
         private List<IMainActions> m_MainActionsCallbackInterfaces = new List<IMainActions>();
         private readonly InputAction m_Main_Pause;
+        private readonly InputAction m_Main_MouseInput;
         /// <summary>
         /// Provides access to input actions defined in input action map "Main".
         /// </summary>
@@ -810,6 +832,10 @@ namespace Gimersia.Core
             /// Provides access to the underlying input action "Main/Pause".
             /// </summary>
             public InputAction @Pause => m_Wrapper.m_Main_Pause;
+            /// <summary>
+            /// Provides access to the underlying input action "Main/MouseInput".
+            /// </summary>
+            public InputAction @MouseInput => m_Wrapper.m_Main_MouseInput;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -839,6 +865,9 @@ namespace Gimersia.Core
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
+                @MouseInput.started += instance.OnMouseInput;
+                @MouseInput.performed += instance.OnMouseInput;
+                @MouseInput.canceled += instance.OnMouseInput;
             }
 
             /// <summary>
@@ -853,6 +882,9 @@ namespace Gimersia.Core
                 @Pause.started -= instance.OnPause;
                 @Pause.performed -= instance.OnPause;
                 @Pause.canceled -= instance.OnPause;
+                @MouseInput.started -= instance.OnMouseInput;
+                @MouseInput.performed -= instance.OnMouseInput;
+                @MouseInput.canceled -= instance.OnMouseInput;
             }
 
             /// <summary>
@@ -1160,6 +1192,13 @@ namespace Gimersia.Core
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnPause(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Mouse Input" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnMouseInput(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

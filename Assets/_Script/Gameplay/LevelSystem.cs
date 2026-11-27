@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Gimersia.Core;
 using Gimersia.Feature.Occupancy;
 using Gimersia.Feature.Screens;
 using Reflex.Attributes;
@@ -13,6 +14,7 @@ namespace Gimersia.Gameplay
     [SourceGeneratorInjectable]
     public partial class LevelSystem
     {
+        [Inject] InputMap _input;
         [Inject] OccupancyManager _judge;
         [Inject] LevelData[] _levelDatas;
         [Inject] Container _diContainer;
@@ -47,6 +49,7 @@ namespace Gimersia.Gameplay
         }
         public async UniTask StartLevel()
         {
+            _input.Main.MouseInput.Disable();
             var data = _levelDatas[_currentLevelIndex];
             _hud.Hide();
             _hud.UpdateLevel(data);
@@ -54,8 +57,9 @@ namespace Gimersia.Gameplay
             _overworld = Instantiate(data.OverworldPrefab);
             GameObjectInjector.InjectRecursive(_overworld.gameObject, _diContainer);
             _overworld.transform.position = Vector3.zero;
-            
+
             _currentBus = Instantiate(data.BusPrefab);
+            _currentBus.transform.position = new Vector3(_currentBus.transform.position.x, 0, _currentBus.transform.position.z);
             GameObjectInjector.InjectRecursive(_currentBus.gameObject, _diContainer);
 
             _spawner.Spawn(_overworld, data);
@@ -65,6 +69,7 @@ namespace Gimersia.Gameplay
 
             _cutscene.EndIntro();
             _hud.Show();
+            _input.Main.MouseInput.Enable();
         }
 
         public async UniTaskVoid NextLevel()

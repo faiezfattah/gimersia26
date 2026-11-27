@@ -1,3 +1,4 @@
+using Gimersia.Core;
 using Gimersia.Feature.DragAndDrop;
 using Gimersia.Feature.Occupancy;
 using LitMotion;
@@ -11,8 +12,9 @@ namespace Gimersia.Gameplay
     public class MouseInteractionHandler : MonoBehaviour
     {
         [Inject] GameplayInteractionCoordinator _interactionCoordinator;
+        [Inject] InputMap _input;
         public LayerMask DroppableLayerMask;
-
+        
         Camera _worldCamera;
         Draggable _currentDraggedObject;
         Vector3 _prevMousePos;
@@ -22,6 +24,7 @@ namespace Gimersia.Gameplay
         float _horizontalMouseVelocitySmoothing;
         Draggable _hoveredDraggable;
         Droppable _hoveredDroppable;
+        bool _isInputEnabled = true;
 
         void Awake()
         {
@@ -30,10 +33,13 @@ namespace Gimersia.Gameplay
             {
                 Debug.LogError($"{nameof(MouseInteractionHandler)} requires a camera tagged MainCamera.", this);
             }
+            // _input.Main.MouseInput
         }
 
         void Update()
         {
+            if (!_isInputEnabled) return;
+            
             if (_worldCamera == null || Mouse.current == null) return;
 
             var mouseWorldPosition = GetMouseWorldPosition();
@@ -47,7 +53,7 @@ namespace Gimersia.Gameplay
 
                 _prevMousePos = mouseWorldPosition;
 
-                if (Mouse.current.leftButton.wasPressedThisFrame)
+                if (_input.Main.MouseInput.WasPressedThisFrame())
                 {
                     _currentDraggedObject = draggable;
                     BeginDrag(draggable, mouseWorldPosition);
@@ -57,7 +63,7 @@ namespace Gimersia.Gameplay
             // if still null dont do anything
             if (_currentDraggedObject == null) return;
 
-            if (Mouse.current.leftButton.isPressed)
+            if (_input.Main.MouseInput.IsPressed())
             {
                 OnDrag(_currentDraggedObject, mouseWorldPosition);
                 return;
