@@ -12,8 +12,11 @@ EditorBuildSettings:
     path: Assets/_Project/Scene/_ZOO.unity
     guid: 0cb8904e82b0aa24ebff4b34764e5c94
   - enabled: 1
-    path: Assets/_Project/Scene/MainMenu.unity
+    path: Assets/_Project/Scene/Splashscreen.unity
     guid: cd00aaf765e4a054ebc8aabe1d5913fb
+  - enabled: 1
+    path: Assets/_Project/Scene/MainMenu.unity
+    guid: 712b441ba6df34044a8ca4132b14e5b0
   - enabled: 1
     path: Assets/_Project/Scene/Main.unity
     guid: 464b40d34ab9c284fac85e50824afce5
