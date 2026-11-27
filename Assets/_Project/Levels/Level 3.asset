@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7853172b3359c314fa75a85bc5919a11, type: 3}
+  m_Name: Level 3
+  m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Gameplay.LevelData
+  BusPrefab: {fileID: 7730937658953940765, guid: 4d04c50a3ed01cd4796d98b5d75bab84, type: 3}
+  OverworldPrefab: {fileID: 9183203786622036103, guid: 2caaafddbb6a75447a65fa21aed04999, type: 3}
+  EntitiesPrefabs:
+  - Id: 
+    EntityPrefab: {fileID: -7231927235395984746, guid: d32da4b805bef45469dd775df8ce1d54, type: 3}
+    AddedRules:
+    - {fileID: 11400000, guid: c0a2ceaadb2d51449aa3de567a5233a6, type: 2}
+  - Id: 
+    EntityPrefab: {fileID: -7231927235395984746, guid: c39ddc09ea756ef44bf519887e04dccd, type: 3}
+    AddedRules:
+    - {fileID: 11400000, guid: 9f76d46ea7f5ada4fabc3208e18821a6, type: 2}
+  - Id: 
+    EntityPrefab: {fileID: -7231927235395984746, guid: cf441957e111c1142b9711f0124842ba, type: 3}
+    AddedRules:
+    - {fileID: 11400000, guid: c0a2ceaadb2d51449aa3de567a5233a6, type: 2}
+  - Id: 
+    EntityPrefab: {fileID: -7231927235395984746, guid: 867eb61e974faea49baf3eb023314db2, type: 3}
+    AddedRules:
+    - {fileID: 11400000, guid: 9f76d46ea7f5ada4fabc3208e18821a6, type: 2}
+  DialogueCommands:
+  - oh no our forest is gone!
+  - /switch
+  - ah masa?
+  - Sok tau lu yeeee
+  TargetAnimalCount: 4

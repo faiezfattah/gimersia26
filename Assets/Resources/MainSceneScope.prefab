@@ -65,7 +65,7 @@ MonoBehaviour:
   _levelDatas:
   - {fileID: 11400000, guid: 0ea1cd8407cce7b42881433b1eaaa0e6, type: 2}
   - {fileID: 11400000, guid: e94029f4258a6514faf4d7caf720e181, type: 2}
-  - {fileID: 11400000, guid: 0ea1cd8407cce7b42881433b1eaaa0e6, type: 2}
+  - {fileID: 11400000, guid: e30b5585049270940916aa0cb5e828b2, type: 2}
   - {fileID: 11400000, guid: e94029f4258a6514faf4d7caf720e181, type: 2}
   _screens: {fileID: 0}
   _camera: {fileID: 0}

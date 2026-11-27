@@ -15,5 +15,7 @@ namespace Gimersia.Feature.Occupancy
         NearWindow = 1 << 5,
         DriverSeat = 1 << 6,
         NavigatorSeat = 1 << 7,
+        BackRow = 1 << 8,
+        FrontRow = 1 << 9,
     }
 }

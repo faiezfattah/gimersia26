@@ -29,10 +29,6 @@ namespace Gimersia.Gameplay {
             _camera.transform.localPosition = _defaultCameraPos; // ignore z pos
 
             await car.AnimateIn();
-
-
-            if (commands != null) await RunDialogueCommand(commands);
-
         }
         public void EndIntro()
         {
