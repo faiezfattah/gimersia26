@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7853172b3359c314fa75a85bc5919a11, type: 3}
   m_Name: Level 3
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Gameplay.LevelData
-  BusPrefab: {fileID: 7730937658953940765, guid: 4d04c50a3ed01cd4796d98b5d75bab84, type: 3}
+  BusPrefab: {fileID: 2706600018004742902, guid: 8f15897d49b9ff740afe7747c1936895, type: 3}
   OverworldPrefab: {fileID: 9183203786622036103, guid: 2caaafddbb6a75447a65fa21aed04999, type: 3}
   EntitiesPrefabs:
   - Id: 
