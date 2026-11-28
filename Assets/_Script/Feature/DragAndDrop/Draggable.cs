@@ -1,10 +1,17 @@
+using LitMotion;
+using LitMotion.Extensions;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Gimersia.Feature.DragAndDrop
 {
     [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
     public class Draggable : MonoBehaviour
     {
+        public SortingGroup SortingGroup;
+        public int SortingOrderOnDrag = 1000;
+        int _defaultSortingOrder;
+        
         Collider2D _collider;
         SpriteRenderer _spriteRenderer;
         Vector3 _originalPosition;
@@ -36,12 +43,14 @@ namespace Gimersia.Feature.DragAndDrop
         public float MouseVelocitySmoothTime => mouseVelocitySmoothTime;
         public float DragSpringStrength => dragSpringStrength;
         public float DragDamping => dragDamping;
+        MotionHandle _currentMotion;
 
         void Awake()
         {
             _collider = GetComponent<Collider2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _defaultRotation = transform.rotation;
+            _defaultSortingOrder = SortingGroup.sortingOrder;
         }
 
         public Vector3 GetTopCenterLocalPosition()
@@ -65,7 +74,21 @@ namespace Gimersia.Feature.DragAndDrop
         {
             _originalPosition = transform.position;
             IsDragging = true;
+            SortingGroup.sortingOrder = 1000;
             ResetSwingState();
+
+            Feedback();
+        }
+        void Feedback()
+        {
+            _currentMotion.TryComplete();
+
+            _currentMotion = LMotion.Punch
+                .Create(transform.localScale, Vector3.one * 0.5f, 0.2f)
+                .WithDampingRatio(2)
+                .WithFrequency(2)
+                .WithOnComplete(() => transform.localScale = Vector3.one)
+                .BindToLocalScale(transform);
         }
 
         public void UpdateDrag(Vector3 mouseWorldPosition, float deltaTime)
@@ -160,6 +183,10 @@ namespace Gimersia.Feature.DragAndDrop
             {
                 dropTarget.AcceptDrop(this);
             }
+
+            SortingGroup.sortingOrder = _defaultSortingOrder;
+
+            Feedback();
         }
 
         void ResetSwingState()

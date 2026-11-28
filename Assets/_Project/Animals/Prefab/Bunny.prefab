@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 194581620101364446}
   - component: {fileID: -7231927235395984746}
   - component: {fileID: 5563173250788299822}
+  - component: {fileID: -5683288606909794480}
   m_Layer: 0
   m_Name: Bunny
   m_TagString: Untagged
@@ -154,9 +155,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f488af9c2be73ad498a63fa8755b367e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.DragAndDrop.Draggable
+  SortingGroup: {fileID: -5683288606909794480}
+  SortingOrderOnDrag: 1000
   dragAnchorOffset: {x: -0.15, y: -0.05}
   maximumDragAngle: 50
-  dragAngleSensitivity: 10
+  dragAccelerationSensitivity: 1
+  dragAirDrag: 0.8
+  dragVerticalGravityInfluence: 0.05
   mouseVelocitySmoothTime: 0.05
   dragSpringStrength: 100
   dragDamping: 6
@@ -175,8 +180,7 @@ MonoBehaviour:
   Width: 1
   Height: 1
   Traits: 136
-  Rules:
-  - {fileID: 11400000, guid: b26b105ffa9e4504784405d5521d0785, type: 2}
+  Rules: []
 --- !u!114 &-7231927235395984746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,3 +212,16 @@ MonoBehaviour:
   SatisfiedSprite: {fileID: 0}
   DissatisfiedSprite: {fileID: 0}
   EmotionDuration: 1.5
+--- !u!210 &-5683288606909794480
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2538286676646534793}
+  m_Enabled: 1
+  m_SortingLayerID: 201519515
+  m_SortingLayer: 1
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
