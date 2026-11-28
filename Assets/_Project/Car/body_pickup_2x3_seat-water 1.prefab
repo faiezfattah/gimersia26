@@ -4962,7 +4962,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gimersia.Feature.Occupancy.OccupancyGrid
   tilemap: {fileID: 4487868657327427649}
-  gridType: 0
+  gridType: 1
 --- !u!114 &190576642388330443
 MonoBehaviour:
   m_ObjectHideFlags: 0

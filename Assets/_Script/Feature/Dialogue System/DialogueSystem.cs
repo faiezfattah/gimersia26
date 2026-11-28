@@ -9,6 +9,7 @@ public class DialogueSystem : MonoBehaviour
     public DialogueBubble DialogueBubble;
 
     Dictionary<Transform, DialogueBubble> _dialogueBubbles = new();
+    Dictionary<Transform, string> _dialogueTexts = new();
     
     ObjectPool<DialogueBubble> _pool;
     Camera _cam;
@@ -28,11 +29,13 @@ public class DialogueSystem : MonoBehaviour
     }
     public void ShowDialogue(Transform target, string text)
     {
+        var isNew = false;
         if (!_dialogueBubbles.TryGetValue(target, out var bubble))
         {
             bubble = _pool.Get();
             bubble.transform.SetParent(Canvas.transform, false);
             _dialogueBubbles[target] = bubble;
+            isNew = true;
         }
         var screenPosition = _cam.WorldToScreenPoint(target.position);
         var canvasRect = (RectTransform)Canvas.transform;
@@ -41,17 +44,31 @@ public class DialogueSystem : MonoBehaviour
         
         ((RectTransform)bubble.transform).anchoredPosition = canvasPosition + new Vector2(0, yoffset);
 
-        bubble.Show(text);
+        if (isNew || !_dialogueTexts.TryGetValue(target, out var currentText) || currentText != text)
+        {
+            _dialogueTexts[target] = text;
+            bubble.Show(text);
+        }
     }
     public void HideDialogue(Transform target)
     {
-        if (!_dialogueBubbles.TryGetValue(target, out var bubble))
-        {
-            Debug.LogWarning($"No dialogue bubble found for target {target.name}");
+        if (target == null || !_dialogueBubbles.TryGetValue(target, out var bubble))
             return;
-        }
-        
+
         _dialogueBubbles.Remove(target);
+        _dialogueTexts.Remove(target);
+        bubble.Hide();
         _pool.Release(bubble);
+    }
+    public void HideAllDialogues()
+    {
+        foreach (var bubble in _dialogueBubbles.Values)
+        {
+            bubble.Hide();
+            _pool.Release(bubble);
+        }
+
+        _dialogueBubbles.Clear();
+        _dialogueTexts.Clear();
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Gimersia.Feature.DragAndDrop;
 using Gimersia.Feature.Occupancy;
 using Reflex.Attributes;
@@ -14,20 +15,28 @@ namespace Gimersia.Gameplay
         [Inject] OccupancyManager _occupancyManager;
         [Inject] LevelSystem _levelSystem;
 
+        readonly HashSet<Transform> _activeDialogueTargets = new();
+
         public void OnPickUp(Entity entity)
         {
-            _dialogueSystem.HideDialogue(entity.occupant.transform);
+            _occupancyManager.PickUpOccupant(entity.occupant);
             _occupancyManager.ShowDroppableTiles();
+            UpdateViolationDialogues();
+        }
+
+        public void CancelPickUp(Entity entity)
+        {
+            if (entity == null)
+                return;
+
+            _occupancyManager.CancelPickUp(entity.occupant);
         }
 
         public void OnDrop()
         {
             _occupancyManager.HideDroppableTiles();
             _occupancyManager.HideAllTileMarkers();
-            if (_levelSystem.Judge()) return;
-
-            foreach (var violation in _occupancyManager.GetViolations())
-                _dialogueSystem.ShowDialogue(violation.Occupant.transform, violation.Rule.ErrorDialogue);
+            UpdateViolationDialogues();
         }
         public void OnDrag(Draggable draggable, Droppable droppable)
         {
@@ -66,6 +75,9 @@ namespace Gimersia.Gameplay
 
             _hud.UpdateCard(entity);
 
+            if (entity.occupant.Grid == null)
+                return;
+
             using (ListPool<Violation>.Get(out var violations))
             {
                 if (!_occupancyManager.GetViolationsFor(entity.occupant, violations))
@@ -85,6 +97,36 @@ namespace Gimersia.Gameplay
                 return false;
 
             return _occupancyManager.TryMoveOccupant(entity.occupant, destination);
+        }
+
+        void UpdateViolationDialogues()
+        {
+            if (_levelSystem.Judge())
+            {
+                _dialogueSystem.HideAllDialogues();
+                _activeDialogueTargets.Clear();
+                return;
+            }
+
+            var violations = _occupancyManager.GetViolations();
+            using (HashSetPool<Transform>.Get(out var nextTargets))
+            {
+                foreach (var violation in violations)
+                    nextTargets.Add(violation.Occupant.transform);
+
+                foreach (var activeTarget in _activeDialogueTargets)
+                {
+                    if (!nextTargets.Contains(activeTarget))
+                        _dialogueSystem.HideDialogue(activeTarget);
+                }
+
+                _activeDialogueTargets.Clear();
+                foreach (var target in nextTargets)
+                    _activeDialogueTargets.Add(target);
+            }
+
+            foreach (var violation in violations)
+                _dialogueSystem.ShowDialogue(violation.Occupant.transform, violation.Rule.ErrorDialogue);
         }
     }
 }

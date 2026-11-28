@@ -140,7 +140,11 @@ namespace Gimersia.Gameplay
         void OnDrop(Droppable dropTarget)
         {
             var draggedObject = _currentDraggedObject;
+            var entity = draggedObject.GetComponent<Entity>();
             var accepted = TryAcceptDrop(draggedObject, dropTarget);
+
+            if (!accepted && entity != null)
+                _interactionCoordinator.CancelPickUp(entity);
 
             draggedObject.EndDrag(accepted ? dropTarget : null);
             draggedObject.ResetRotation();
@@ -149,7 +153,7 @@ namespace Gimersia.Gameplay
             _interactionCoordinator.OnDrop();
 
             EventBus.Raise(new EntityDropEvent(
-                draggedObject.GetComponent<Entity>(),
+                entity,
                 dropTarget?.GetComponent<Occupiable>(),
                 dropTarget != null ? dropTarget.transform.position : Vector3.zero,
                 accepted));

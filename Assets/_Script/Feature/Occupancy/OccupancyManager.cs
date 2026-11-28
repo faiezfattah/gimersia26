@@ -10,6 +10,10 @@ public class OccupancyManager
 {
     [SerializeField, ReadOnly] List<OccupancyGrid> _grids = new();
 
+    Occupant _pickedOccupant;
+    OccupancyGrid _pickedSourceGrid;
+    Vector2Int? _pickedSourcePosition;
+
     public OccupancyGrid GetOverworldGrid()
     {
         foreach (var grid in _grids)
@@ -47,31 +51,62 @@ public class OccupancyManager
         else Debug.LogError($"Grid {grid.name} is not registered in JudgingSystem.");
     }
 
+    public bool PickUpOccupant(Occupant occupant)
+    {
+        if (occupant == null)
+            return false;
+
+        _pickedOccupant = occupant;
+        _pickedSourceGrid = occupant.Grid;
+        _pickedSourcePosition = occupant.Position;
+
+        if (_pickedSourceGrid != null && _pickedSourcePosition.HasValue)
+            return _pickedSourceGrid.TryVacate(occupant);
+
+        return true;
+    }
+
+    public bool CancelPickUp(Occupant occupant)
+    {
+        if (occupant == null || occupant != _pickedOccupant)
+            return false;
+
+        var sourceGrid = _pickedSourceGrid;
+        var sourcePosition = _pickedSourcePosition;
+        ClearPickedState();
+
+        if (sourceGrid != null && sourcePosition.HasValue)
+            return sourceGrid.TryOccupy(occupant, sourcePosition.Value);
+
+        return false;
+    }
+
     public bool TryMoveOccupant(Occupant occupant, Occupiable destination)
     {
         if (occupant == null || destination == null || destination.Grid == null)
         {
-            Debug.LogError($"Invalid occupant or destination. Occupant: {occupant.name}, Destination: {destination.name}");
+            Debug.LogError($"Invalid occupant or destination. Occupant: {occupant}, Destination: {destination}");
             return false;
         }
 
         var destinationGrid = destination.Grid;
         var destinationPosition = (Vector2Int)destinationGrid.tilemap.WorldToCell(destination.transform.position);
 
+        var wasPicked = occupant == _pickedOccupant;
+        var sourceGrid = wasPicked ? _pickedSourceGrid : occupant.Grid;
+        var sourcePosition = wasPicked ? _pickedSourcePosition : occupant.Position;
+
         if (!destinationGrid.IsVacant(destinationPosition))
         {
-            if (occupant.Grid == destinationGrid && occupant.Position == destinationPosition)
+            if (!wasPicked && occupant.Grid == destinationGrid && occupant.Position == destinationPosition)
             {
-                EventBus.Raise(new OccupantMovedEvent(occupant, null, destinationPosition, destinationGrid, destinationPosition));
+                EventBus.Raise(new OccupantMovedEvent(occupant, sourceGrid, destinationPosition, destinationGrid, destinationPosition));
                 return true;
             }
             return false;
         }
 
-        var sourceGrid = occupant.Grid;
-        var sourcePosition = occupant.Position;
-
-        if (sourceGrid != null && sourcePosition.HasValue)
+        if (!wasPicked && sourceGrid != null && sourcePosition.HasValue)
         {
             if (!sourceGrid.TryVacate(occupant))
                 return false;
@@ -79,14 +114,27 @@ public class OccupancyManager
 
         if (destinationGrid.TryOccupy(occupant, destinationPosition))
         {
-            EventBus.Raise(new OccupantMovedEvent(occupant, sourceGrid, sourcePosition.Value, destinationGrid, destinationPosition));
+            if (wasPicked) ClearPickedState();
+            EventBus.Raise(new OccupantMovedEvent(
+                occupant,
+                sourceGrid,
+                sourcePosition ?? destinationPosition,
+                destinationGrid,
+                destinationPosition));
             return true;
         }
 
-        if (sourceGrid != null && sourcePosition.HasValue)
+        if (!wasPicked && sourceGrid != null && sourcePosition.HasValue)
             sourceGrid.TryOccupy(occupant, sourcePosition.Value);
             
         return false;
+    }
+
+    void ClearPickedState()
+    {
+        _pickedOccupant = null;
+        _pickedSourceGrid = null;
+        _pickedSourcePosition = null;
     }
 
     public List<Violation> GetViolations()
