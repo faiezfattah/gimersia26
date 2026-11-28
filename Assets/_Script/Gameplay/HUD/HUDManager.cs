@@ -30,6 +30,7 @@ namespace Gimersia.Gameplay
         public ProgressBar ProgressBar;
         LevelData _currentData;
         IDisposable[] _bag;
+        MotionHandle _cardMotionHandle;
 
         List<TextMeshProUGUI> _ruleTexts = new ();
         void Start()
@@ -64,6 +65,9 @@ namespace Gimersia.Gameplay
 
         void OnDestroy()
         {
+            if (_cardMotionHandle.IsActive())
+                _cardMotionHandle.Cancel();
+
             SubmitButton.onClick.RemoveListener(OnSubmit);
             foreach (var item in _bag) item?.Dispose();
         }
@@ -92,15 +96,21 @@ namespace Gimersia.Gameplay
                 text.text = rule.WantText;
             }
 
-            LMotion
-                .Create(-100f, 100f, 0.3f)
+            if (_cardMotionHandle.IsActive())
+                _cardMotionHandle.Cancel();
+
+            _cardMotionHandle = LMotion
+                .Create(CardRect.anchoredPosition.y, 100f, 0.3f)
                 .WithEase(Ease.OutBack)
                 .BindToAnchoredPosition3DY(CardRect);
         }
         public void HideCard()
         {
-            LMotion
-                .Create(100f, -100f, 0.3f)
+            if (_cardMotionHandle.IsActive())
+                _cardMotionHandle.Cancel();
+
+            _cardMotionHandle = LMotion
+                .Create(CardRect.anchoredPosition.y, -100f, 0.3f)
                 .WithEase(Ease.OutCubic)
                 .BindToAnchoredPosition3DY(CardRect);
 

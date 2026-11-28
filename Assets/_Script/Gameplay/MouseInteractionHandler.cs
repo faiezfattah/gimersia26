@@ -38,11 +38,12 @@ namespace Gimersia.Gameplay
             if (_worldCamera == null || Mouse.current == null) return;
 
             var mouseWorldPosition = GetMouseWorldPosition();
-            UpdateDraggableHover(mouseWorldPosition);
             UpdateDroppableHover(mouseWorldPosition);
 
             if (_currentDraggedObject == null)
             {
+                UpdateDraggableHover(mouseWorldPosition);
+
                 var draggable = FindDraggable(mouseWorldPosition);
                 if (draggable == null) return;
 
