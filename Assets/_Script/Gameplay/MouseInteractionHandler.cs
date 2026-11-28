@@ -17,11 +17,6 @@ namespace Gimersia.Gameplay
         
         Camera _worldCamera;
         Draggable _currentDraggedObject;
-        Vector3 _prevMousePos;
-        float _dragAngle;
-        float _dragAngularVelocity;
-        float _horizontalMouseVelocity;
-        float _horizontalMouseVelocitySmoothing;
         Draggable _hoveredDraggable;
         Droppable _hoveredDroppable;
         bool _isInputEnabled = true;
@@ -51,8 +46,6 @@ namespace Gimersia.Gameplay
                 var draggable = FindDraggable(mouseWorldPosition);
                 if (draggable == null) return;
 
-                _prevMousePos = mouseWorldPosition;
-
                 if (_input.Main.MouseInput.WasPressedThisFrame())
                 {
                     _currentDraggedObject = draggable;
@@ -79,12 +72,6 @@ namespace Gimersia.Gameplay
             draggable.BeginDrag();
             draggable.SetTopCenterPosition(mouseWorldPosition);
 
-            _dragAngle = 0f;
-            _dragAngularVelocity = 0f;
-
-            _horizontalMouseVelocity = 0f;
-            _horizontalMouseVelocitySmoothing = 0f;
-
             if (!draggable.TryGetComponent<Entity>(out var entity))
                 throw new System.Exception($"Occupant with valid data doesnt exist on the draggable object {draggable.name}.");
 
@@ -93,33 +80,7 @@ namespace Gimersia.Gameplay
 
         void OnDrag(Draggable draggable, Vector3 mouseWorldPosition)
         {
-            var horizontalSpeed = (mouseWorldPosition.x - _prevMousePos.x)
-                / Mathf.Max(Time.deltaTime, 0.0001f);
-            _horizontalMouseVelocity = Mathf.SmoothDamp(
-                _horizontalMouseVelocity,
-                horizontalSpeed,
-                ref _horizontalMouseVelocitySmoothing,
-                draggable.MouseVelocitySmoothTime);
-
-            var targetAngle = Mathf.Clamp(
-                -_horizontalMouseVelocity * draggable.DragAngleSensitivity,
-                -draggable.MaximumDragAngle,
-                draggable.MaximumDragAngle);
-            var springAcceleration = (targetAngle - _dragAngle) * draggable.DragSpringStrength;
-            var dampingAcceleration = _dragAngularVelocity * draggable.DragDamping;
-
-            _dragAngularVelocity += (springAcceleration - dampingAcceleration) * Time.deltaTime;
-            _dragAngle += _dragAngularVelocity * Time.deltaTime;
-            _dragAngle = Mathf.Clamp(
-                _dragAngle,
-                -draggable.MaximumDragAngle,
-                draggable.MaximumDragAngle);
-            draggable.transform.rotation = draggable.DefaultRotation
-                * Quaternion.Euler(0f, 0f, _dragAngle);
-
-            _currentDraggedObject.SetTopCenterPosition(mouseWorldPosition);
-            _prevMousePos = mouseWorldPosition;
-
+            draggable.UpdateDrag(mouseWorldPosition, Time.deltaTime);
             _interactionCoordinator.OnDrag(draggable, _hoveredDroppable);
         }
 
