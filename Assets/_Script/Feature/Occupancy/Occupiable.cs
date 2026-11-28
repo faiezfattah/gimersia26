@@ -9,6 +9,7 @@ namespace Gimersia.Feature.Occupancy
         public SpriteRenderer AvailableMarker;
         public SpriteRenderer ViolatedMarker;
         public SpriteRenderer HintMarker;
+        public SpriteRenderer DefaultMarker;
         public OccupancyGrid Grid { get; private set; }
         internal void Inject(OccupancyGrid grid)
         {
@@ -18,33 +19,38 @@ namespace Gimersia.Feature.Occupancy
         {
             HideAllMarkers();
             ViolatedMarker.enabled = true;
+            DefaultMarker.enabled = false;
         }
         public void HideViolatedMarker()
         {
             ViolatedMarker.enabled = false;
+            DefaultMarker.enabled = true;
         }
 
         public void ShowAvailableMarker()
         {
             HideAllMarkers();
             AvailableMarker.enabled = true;
+            DefaultMarker.enabled = false;
         }
         
         public void HideAvailableMarker()
         {
             AvailableMarker.enabled = false;
+            DefaultMarker.enabled = true;
         }
         
         // display the rule scope and extent
         public void ShowHintMarker()
         {
             HideAllMarkers();
-            Debug.Log($"Showing hint marker for {name}");
             HintMarker.enabled = true;
+            DefaultMarker.enabled = false;
         }
         public void HideHintMarker()
         {
             HintMarker.enabled = false;
+            DefaultMarker.enabled = true;
         }
 
         public void HideAllMarkers()
@@ -52,6 +58,7 @@ namespace Gimersia.Feature.Occupancy
             HideAvailableMarker();
             HideViolatedMarker();
             HideHintMarker();
+            DefaultMarker.enabled = true;
         }
     }
 }

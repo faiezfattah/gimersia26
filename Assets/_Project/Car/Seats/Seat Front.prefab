@@ -386,6 +386,7 @@ MonoBehaviour:
   AvailableMarker: {fileID: 4430786334217517898}
   ViolatedMarker: {fileID: 5758338543905433739}
   HintMarker: {fileID: 5202396260318829832}
+  DefaultMarker: {fileID: 5674787158882422094}
 --- !u!1 &7012914121602104096
 GameObject:
   m_ObjectHideFlags: 0
