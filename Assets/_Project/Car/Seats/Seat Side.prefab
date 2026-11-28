@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 573063846150408890, guid: 77a437f1cdad36f49a05257400ee6dfa, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.067
+      objectReference: {fileID: 0}
     - target: {fileID: 750421445871303693, guid: 77a437f1cdad36f49a05257400ee6dfa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -48,6 +52,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2405291258453661796, guid: 77a437f1cdad36f49a05257400ee6dfa, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.067
+      objectReference: {fileID: 0}
+    - target: {fileID: 3371018270712907577, guid: 77a437f1cdad36f49a05257400ee6dfa, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.067
+      objectReference: {fileID: 0}
     - target: {fileID: 3782544999804728666, guid: 77a437f1cdad36f49a05257400ee6dfa, type: 3}
       propertyPath: m_Name
       value: Seat Side
@@ -68,6 +80,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 36c6dbd3f8b82474590fb9dc8eb2b1c2, type: 3}
+    - target: {fileID: 5787487922963335979, guid: 77a437f1cdad36f49a05257400ee6dfa, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.067
+      objectReference: {fileID: 0}
     - target: {fileID: 6311955218909665198, guid: 77a437f1cdad36f49a05257400ee6dfa, type: 3}
       propertyPath: Offset.x
       value: 0.25

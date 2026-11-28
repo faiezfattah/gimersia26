@@ -23,7 +23,7 @@ namespace Gimersia.Gameplay
                 foreach (var entry in levelData.EntitiesPrefabs)
                 {
                     var entity = Instantiate(entry.EntityPrefab);
-                    if (!string.IsNullOrEmpty(entry.Id)) entity.name = entry.Id;
+                    entity.name = string.IsNullOrEmpty(entry.Id) ? entry.EntityPrefab.name : entry.Id;
 
                     if (entry.AddedRules != null && entry.AddedRules.Length > 0)
                     {
